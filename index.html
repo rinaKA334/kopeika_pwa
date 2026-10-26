@@ -2,177 +2,207 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Кошелёк — учёт трат</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/pt-sans@latest/cyrillic-400-normal.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/pt-sans@latest/cyrillic-700-normal.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Учёт трат</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
-    font-family: 'PT Sans', sans-serif;
-    background: #F5F5F7;
-    color: #2D3436;
-    overflow-x: hidden;
-    min-height: 100vh;
+  @import url('https://fonts.cdnfonts.com/css/inter');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
-  .app {
-    max-width: 430px;
-    margin: 0 auto;
-    min-height: 100vh;
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f5f5f7;
+    overflow: hidden;
+    width: 1920px;
+    height: 1200px;
     position: relative;
-    background: #F5F5F7;
+  }
+
+  .app-container {
+    display: flex;
+    width: 1920px;
+    height: 1200px;
+    position: relative;
+  }
+
+  /* Left scrollable area */
+  .left-panel {
+    width: 720px;
+    height: 1200px;
+    overflow-y: auto;
+    padding: 40px 48px 120px 48px;
+    position: relative;
+    z-index: 2;
+    background: #f5f5f7;
+  }
+
+  .left-panel::-webkit-scrollbar {
+    width: 0;
+  }
+
+  /* Right fixed area */
+  .right-panel {
+    width: 1200px;
+    height: 1200px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .character-image {
+    width: 1200px;
+    height: 1280px;
+    /* ВСТАВЬТЕ URL ИЗОБРАЖЕНИЯ ПЕРСОНАЖА НИЖЕ */
+    /* background-image: url('YOUR_CHARACTER_IMAGE_URL'); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    position: absolute;
+    bottom: -80px;
+    right: 0;
+  }
+
+  /* Date and greeting */
+  .date-text {
+    font-size: 16px;
+    color: #8e8e93;
+    margin-bottom: 8px;
+  }
+
+  .greeting {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1c1c1e;
+    margin-bottom: 40px;
+  }
+
+  /* Balance section */
+  .balance-section {
+    margin-bottom: 40px;
+  }
+
+  .balance-amount {
+    font-size: 56px;
+    font-weight: 700;
+    color: #1c1c1e;
+    letter-spacing: -1px;
+  }
+
+  .balance-label {
+    font-size: 16px;
+    color: #8e8e93;
+    margin-top: 4px;
+  }
+
+  /* Progress bar */
+  .progress-container {
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e5e5ea;
+    border-radius: 6px;
     overflow: hidden;
   }
 
-  /* ===== HOME SCREEN ===== */
-  .home-screen {
-    padding-bottom: 100px;
-    min-height: 100vh;
-  }
-
-  .hero {
-    position: relative;
-    padding: 20px 20px 0;
-    min-height: 220px;
-  }
-  .hero-bg {
-    position: absolute;
-    top: 0; right: 0;
-    width: 220px;
-    height: 260px;
-    z-index: 1;
-  }
-  .hero-bg img {
-    width: 100%;
+  .progress-fill {
     height: 100%;
-    object-fit: contain;
-    object-position: top right;
-  }
-  .greeting-card {
-    position: relative;
-    z-index: 2;
-    border: 1.5px dashed #B0B0B0;
-    border-radius: 16px;
-    padding: 16px 20px;
-    background: rgba(255,255,255,0.3);
-    backdrop-filter: blur(4px);
-    max-width: 260px;
-  }
-  .greeting-date {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 4px;
-  }
-  .greeting-text {
-    font-size: 22px;
-    font-weight: 700;
-    color: #2D3436;
+    width: 41.6%;
+    background: linear-gradient(90deg, #7dd3a0 0%, #c8e64e 60%, #f0d040 100%);
+    border-radius: 6px;
+    transition: width 0.5s ease;
   }
 
-  /* Balance Card */
-  .balance-card {
-    margin: 20px;
-    background: #fff;
-    border-radius: 24px;
-    padding: 24px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  .progress-limit {
+    font-size: 14px;
+    color: #8e8e93;
+    text-align: right;
+    margin-top: 8px;
   }
-  .balance-header {
+
+  /* Templates section */
+  .section-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 36px;
   }
-  .balance-amount {
-    font-size: 42px;
+
+  .section-title {
+    font-size: 24px;
     font-weight: 700;
-    color: #2D3436;
-    line-height: 1;
+    color: #1c1c1e;
   }
-  .balance-amount .currency {
-    font-size: 36px;
-    font-weight: 400;
-  }
-  .balance-icon {
-    width: 48px;
-    height: 48px;
+
+  .section-add-btn {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 2px solid #7BC4A0;
+    border: 2px solid #d1d1d6;
+    background: transparent;
+    font-size: 22px;
+    color: #1c1c1e;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #7BC4A0;
-  }
-  .balance-icon svg { width: 24px; height: 24px; }
-  .balance-subtitle {
-    font-size: 15px;
-    color: #999;
-    margin-top: 8px;
-  }
-  .progress-bar-wrap {
-    margin-top: 20px;
-    background: #E8E8E8;
-    border-radius: 12px;
-    height: 14px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #7BC4A0, #C8D96A);
-    width: 41.6%;
-    transition: width 0.5s ease;
-  }
-  .balance-limit {
-    text-align: right;
-    font-size: 14px;
-    color: #999;
-    margin-top: 8px;
+    transition: all 0.2s;
   }
 
-  /* Templates */
-  .section-title {
-    font-size: 22px;
-    font-weight: 700;
-    padding: 0 20px;
-    margin-bottom: 16px;
+  .section-add-btn:hover {
+    background: #1c1c1e;
+    color: #fff;
+    border-color: #1c1c1e;
   }
-  .templates-scroll {
-    display: flex;
-    gap: 14px;
-    padding: 0 20px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding-bottom: 4px;
+
+  .templates-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
   }
-  .templates-scroll::-webkit-scrollbar { display: none; }
+
   .template-card {
-    min-width: 150px;
     background: #fff;
     border-radius: 20px;
     padding: 20px 16px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    flex-shrink: 0;
+    transition: all 0.2s;
+    border: 2px solid transparent;
   }
-  .template-card:active {
-    transform: scale(0.95);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+
+  .template-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    border-color: #7dd3a0;
   }
+
   .template-amount {
     font-size: 20px;
     font-weight: 700;
-    color: #2D3436;
+    color: #1c1c1e;
     margin-bottom: 12px;
   }
+
   .template-divider {
     width: 40px;
-    height: 1.5px;
-    background: #E0E0E0;
+    height: 2px;
+    background: #e5e5ea;
     margin: 0 auto 12px;
   }
+
   .template-icon {
     width: 40px;
     height: 40px;
@@ -181,213 +211,331 @@
     align-items: center;
     justify-content: center;
   }
-  .template-icon svg { width: 32px; height: 32px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
-  .template-name {
-    font-size: 15px;
-    color: #555;
+
+  .template-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
   }
 
-  /* Operations */
-  .operations-header {
+  .template-name {
+    font-size: 15px;
+    color: #1c1c1e;
+    font-weight: 500;
+  }
+
+  /* Transactions section */
+  .transactions-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    margin-bottom: 16px;
-    margin-top: 28px;
+    margin-top: 36px;
+    margin-bottom: 20px;
   }
-  .operations-header .section-title { margin: 0; }
-  .see-all {
-    font-size: 16px;
-    color: #7BC4A0;
+
+  .transactions-all {
+    font-size: 18px;
+    color: #1c1c1e;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 500;
   }
-  .operation-list {
-    padding: 0 20px;
+
+  .transactions-all:hover {
+    color: #7dd3a0;
+  }
+
+  .transaction-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
-  .operation-item {
+
+  .transaction-item {
     background: #fff;
     border-radius: 20px;
-    padding: 18px 20px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .transaction-item:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .transaction-left {
     display: flex;
     align-items: center;
     gap: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    cursor: pointer;
-    transition: transform 0.15s;
   }
-  .operation-item:active { transform: scale(0.98); }
-  .op-icon {
+
+  .transaction-icon {
     width: 44px;
     height: 44px;
+    border-radius: 14px;
+    background: #f5f5f7;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-  }
-  .op-icon svg { width: 36px; height: 36px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
-  .op-info { flex: 1; }
-  .op-name {
-    font-size: 17px;
-    font-weight: 700;
-    color: #2D3436;
-  }
-  .op-meta {
-    font-size: 13px;
-    color: #999;
-    margin-top: 2px;
-  }
-  .op-amount {
-    font-size: 20px;
-    font-weight: 700;
-    color: #2D3436;
-    white-space: nowrap;
   }
 
-  /* Bottom Nav */
+  .transaction-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .transaction-info h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1e;
+  }
+
+  .transaction-info p {
+    font-size: 13px;
+    color: #8e8e93;
+    margin-top: 2px;
+  }
+
+  .transaction-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1c1c1e;
+  }
+
+  /* Bottom navigation */
   .bottom-nav {
     position: fixed;
-    bottom: 0;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
-    max-width: 430px;
     background: #fff;
-    border-radius: 28px 28px 0 0;
-    padding: 10px 16px 20px;
+    border-radius: 32px;
+    padding: 12px 16px;
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    box-shadow: 0 -2px 20px rgba(0,0,0,0.06);
-    z-index: 10;
+    gap: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    z-index: 100;
   }
+
+  .nav-wallet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    min-width: 80px;
+  }
+
+  .nav-wallet svg {
+    width: 24px;
+    height: 24px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .nav-wallet span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1c1c1e;
+    margin-top: 2px;
+  }
+
   .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    padding: 8px 16px;
     cursor: pointer;
-    padding: 4px 8px;
-    transition: opacity 0.2s;
+    border-radius: 20px;
+    transition: all 0.2s;
+    min-width: 72px;
   }
-  .nav-item:active { opacity: 0.6; }
-  .nav-item svg { width: 26px; height: 26px; }
+
+  .nav-item:hover {
+    background: #f5f5f7;
+  }
+
+  .nav-item.active {
+    background: #e8f5ee;
+  }
+
+  .nav-item svg {
+    width: 24px;
+    height: 24px;
+    stroke: #8e8e93;
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .nav-item.active svg {
+    stroke: #4caf7a;
+  }
+
   .nav-item span {
-    font-size: 11px;
-    color: #999;
+    font-size: 12px;
+    color: #8e8e93;
+    margin-top: 4px;
+    font-weight: 500;
   }
-  .nav-item.active svg { color: #7BC4A0; }
-  .nav-item.active span { color: #7BC4A0; }
-  .nav-add {
+
+  .nav-item.active span {
+    color: #4caf7a;
+  }
+
+  .nav-add-btn {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7BC4A0, #C8D96A);
+    background: #7dd3a0;
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(123,196,160,0.4);
-    transition: transform 0.15s;
-    margin-top: -20px;
+    transition: all 0.2s;
+    margin: 0 4px;
   }
-  .nav-add:active { transform: scale(0.9); }
-  .nav-add svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 2.5; }
-  .nav-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #E0E0E0;
-  }
-  .nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-  /* ===== OVERLAY ===== */
+  .nav-add-btn:hover {
+    background: #6bc490;
+    transform: scale(1.05);
+  }
+
+  .nav-add-btn svg {
+    width: 28px;
+    height: 28px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  /* Overlay */
   .overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #F5F5F7;
-    z-index: 100;
-    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(245, 245, 247, 0.97);
+    z-index: 200;
+    display: none;
     flex-direction: column;
-    transform: translateY(100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    max-width: 430px;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%) translateY(100%);
+    align-items: center;
+    padding: 40px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
+
   .overlay.active {
-    transform: translateX(-50%) translateY(0);
+    display: flex;
+    opacity: 1;
   }
+
   .overlay-header {
+    width: 100%;
+    max-width: 600px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
+    margin-bottom: 40px;
   }
-  .btn-close {
-    width: 44px;
-    height: 44px;
+
+  .overlay-close {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
     transition: background 0.2s;
   }
-  .btn-close:active { background: rgba(0,0,0,0.06); }
-  .btn-close svg { width: 28px; height: 28px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
-  .btn-calendar {
-    width: 44px;
-    height: 44px;
+
+  .overlay-close:hover {
+    background: #e5e5ea;
+  }
+
+  .overlay-close svg {
+    width: 28px;
+    height: 28px;
+    stroke: #1c1c1e;
+    stroke-width: 2;
+  }
+
+  .overlay-calendar {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
   }
-  .btn-calendar svg { width: 32px; height: 32px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
+
+  .overlay-calendar svg {
+    width: 36px;
+    height: 36px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+  }
 
   .overlay-amount {
-    text-align: center;
-    padding: 20px 20px 10px;
-  }
-  .overlay-amount-value {
-    font-size: 52px;
+    font-size: 72px;
     font-weight: 700;
-    color: #2D3436;
-    line-height: 1;
+    color: #1c1c1e;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
   }
-  .overlay-amount-value .cur { font-size: 44px; font-weight: 400; }
 
-  /* Selection Card */
-  .selection-card {
-    margin: 16px 20px;
+  .overlay-form {
+    width: 100%;
+    max-width: 600px;
     background: #fff;
-    border-radius: 24px;
-    padding: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border-radius: 28px;
+    padding: 24px;
+    margin-bottom: 32px;
   }
-  .select-btn {
+
+  .form-field {
+    background: #f5f5f7;
+    border-radius: 20px;
+    padding: 18px 24px;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 16px 20px;
-    background: #F5F5F7;
-    border-radius: 18px;
+    gap: 16px;
     cursor: pointer;
-    transition: background 0.2s;
-    border: none;
-    width: 100%;
-    text-align: left;
-    font-family: inherit;
+    transition: all 0.2s;
+    margin-bottom: 12px;
   }
-  .select-btn:active { background: #ECECEC; }
-  .select-btn-icon {
+
+  .form-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .form-field:hover {
+    background: #eee;
+  }
+
+  .form-field.selected {
+    background: #7dd3a0;
+  }
+
+  .form-field.selected .form-field-text {
+    color: #fff;
+  }
+
+  .form-field-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -395,804 +543,779 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
-  .select-btn-icon svg { width: 22px; height: 22px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
-  .select-btn-text {
-    font-size: 18px;
-    color: #2D3436;
-    flex: 1;
+
+  .form-field-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
   }
-  .select-btn.filled {
-    background: #7BC4A0;
+
+  .form-field-text {
+    font-size: 20px;
+    color: #1c1c1e;
+    font-weight: 500;
   }
-  .select-btn.filled .select-btn-text {
-    color: #fff;
-    font-weight: 700;
+
+  .form-arrow {
+    text-align: center;
+    margin: 8px 0;
   }
-  .select-btn.filled .select-btn-icon {
-    background: #fff;
+
+  .form-arrow svg {
+    width: 24px;
+    height: 24px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 2;
   }
-  .arrow-down {
-    display: flex;
-    justify-content: center;
-    padding: 8px 0;
-  }
-  .arrow-down svg { width: 24px; height: 24px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
 
   /* Keypad */
   .keypad {
-    flex: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 10px;
-    padding: 16px 20px 20px;
-    align-content: end;
+    gap: 16px;
+    max-width: 560px;
+    width: 100%;
   }
-  .key {
+
+  .key-btn {
+    width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
+    border: none;
     background: #fff;
+    font-size: 32px;
+    font-weight: 500;
+    color: #1c1c1e;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    font-weight: 400;
-    color: #2D3436;
-    cursor: pointer;
+    transition: all 0.15s;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: transform 0.1s, box-shadow 0.1s;
-    user-select: none;
-    border: none;
-    font-family: inherit;
-  }
-  .key:active {
-    transform: scale(0.92);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  }
-  .key-delete {
-    background: #F47272;
-    color: #fff;
-  }
-  .key-delete svg { width: 32px; height: 32px; stroke: #fff; fill: none; stroke-width: 2; }
-  .key-confirm {
-    grid-row: span 2;
-    border-radius: 40px;
-    background: #7BC4A0;
-    color: #fff;
-    aspect-ratio: auto;
-  }
-  .key-confirm svg { width: 40px; height: 40px; stroke: #fff; fill: none; stroke-width: 2.5; }
-  .key-zero {
-    grid-column: span 3;
-    border-radius: 40px;
-    aspect-ratio: auto;
   }
 
-  /* Wallet/Category Picker Modal */
-  .picker-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 200;
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-    max-width: 430px;
-    margin: 0 auto;
+  .key-btn:hover {
+    background: #f0f0f2;
+    transform: scale(1.02);
   }
-  .picker-overlay.active { display: flex; }
-  .picker-sheet {
-    background: #fff;
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-width: 430px;
-    padding: 20px;
-    max-height: 60vh;
-    overflow-y: auto;
-    animation: slideUp 0.3s ease;
+
+  .key-btn:active {
+    transform: scale(0.95);
   }
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+
+  .key-btn.delete {
+    background: #ff6b6b;
+    color: #fff;
   }
-  .picker-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    text-align: center;
+
+  .key-btn.delete:hover {
+    background: #ff5252;
   }
-  .picker-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-bottom: 6px;
+
+  .key-btn.delete svg {
+    width: 32px;
+    height: 32px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2;
   }
-  .picker-item:active { background: #F5F5F7; }
-  .picker-item-icon {
+
+  .key-btn.confirm {
+    background: #7dd3a0;
+    color: #fff;
+    border-radius: 28px;
+    aspect-ratio: auto;
+    height: 100%;
+    grid-row: span 2;
+  }
+
+  .key-btn.confirm:hover {
+    background: #6bc490;
+  }
+
+  .key-btn.confirm svg {
     width: 40px;
     height: 40px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  .key-btn.zero {
+    grid-column: span 2;
+    border-radius: 40px;
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  /* Wallet selector dropdown */
+  .wallet-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 10;
+    display: none;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .wallet-dropdown.show {
+    display: block;
+  }
+
+  .wallet-option {
+    padding: 14px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.15s;
+  }
+
+  .wallet-option:hover {
+    background: #f5f5f7;
+  }
+
+  .wallet-option.selected {
+    background: #e8f5ee;
+    color: #4caf7a;
+    font-weight: 600;
+  }
+
+  .form-field-wrapper {
+    position: relative;
+  }
+
+  /* Category selector */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 600px;
+    width: 100%;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .category-grid.show {
+    display: grid;
+  }
+
+  .category-option {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+
+  .category-option:hover {
+    border-color: #7dd3a0;
+  }
+
+  .category-option.selected {
+    border-color: #7dd3a0;
+    background: #e8f5ee;
+  }
+
+  .category-option svg {
+    width: 28px;
+    height: 28px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .category-option span {
+    font-size: 13px;
+    color: #1c1c1e;
+    font-weight: 500;
+  }
+
+  /* Profile button */
+  .profile-btn {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: #F5F5F7;
+    background: #fff;
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .picker-item-icon svg { width: 22px; height: 22px; stroke: #2D3436; fill: none; stroke-width: 1.5; }
-  .picker-item-name { font-size: 17px; color: #2D3436; }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 110px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #2D3436;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 16px;
-    font-size: 15px;
-    z-index: 300;
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none;
-    max-width: 380px;
-    text-align: center;
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    z-index: 50;
+    transition: all 0.2s;
   }
 
-  @media (min-width: 431px) {
-    .app { border-left: 1px solid #E0E0E0; border-right: 1px solid #E0E0E0; }
+  .profile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .profile-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
   }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- ===== HOME SCREEN ===== -->
-  <div class="home-screen" id="homeScreen">
-    <div class="hero">
-      <div class="hero-bg">
-        <img id="characterImg" src="" alt="Персонаж">
-      </div>
-      <div class="greeting-card">
-        <div class="greeting-date" id="greetingDate">среда, 21 октября</div>
-        <div class="greeting-text">Привет, user1234</div>
+<div class="app-container">
+  <!-- Left scrollable panel -->
+  <div class="left-panel" id="leftPanel">
+    <div class="date-text" id="currentDate">среда, 21 октября</div>
+    <div class="greeting">Привет, user1234</div>
+
+    <div class="balance-section">
+      <div class="balance-amount" id="balanceAmount">12 480 ₽</div>
+      <div class="balance-label">потрачено за этот месяц</div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-limit">Лимит 30 000 ₽</div>
       </div>
     </div>
 
-    <div class="balance-card">
-      <div class="balance-header">
-        <div>
-          <div class="balance-amount">12 480 <span class="currency">₽</span></div>
-          <div class="balance-subtitle">потрачено за этот месяц</div>
-        </div>
-        <div class="balance-icon">
-          <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" id="progressFill"></div>
-      </div>
-      <div class="balance-limit">Лимит 30 000 ₽</div>
+    <div class="section-header">
+      <div class="section-title">Шаблоны трат</div>
+      <button class="section-add-btn" id="addTemplateBtn" title="Добавить шаблон">+</button>
     </div>
 
-    <div class="section-title">Шаблоны трат</div>
-    <div class="templates-scroll" id="templatesScroll">
-      <div class="template-card" data-amount="65000" data-category="Квартира" data-icon="bed">
+    <div class="templates-grid" id="templatesGrid">
+      <div class="template-card" data-template="apartment" data-amount="65000" data-category="Квартира">
         <div class="template-amount">-65000₽</div>
         <div class="template-divider"></div>
         <div class="template-icon">
-          <svg viewBox="0 0 36 36"><path d="M4 24V14a2 2 0 012-2h24a2 2 0 012 2v10" stroke-linecap="round"/><path d="M4 24h28M8 24v4M28 24v4M10 12V8a2 2 0 012-2h12a2 2 0 012 2v4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M3 21V9l9-7 9 7v12M9 21v-6h6v6"/></svg>
         </div>
         <div class="template-name">Квартира</div>
       </div>
-      <div class="template-card" data-amount="500" data-category="Продукты" data-icon="basket">
+      <div class="template-card" data-template="groceries" data-amount="500" data-category="Продукты">
         <div class="template-amount">-500₽</div>
         <div class="template-divider"></div>
         <div class="template-icon">
-          <svg viewBox="0 0 36 36"><path d="M6 12h24l-2 16H8L6 12z" stroke-linejoin="round"/><path d="M12 12V8a6 6 0 0112 0v4" stroke-linecap="round"/><path d="M14 20v4M18 20v4M22 20v4" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
         </div>
         <div class="template-name">Продукты</div>
       </div>
-      <div class="template-card" data-amount="1083" data-category="Такси" data-icon="taxi">
+      <div class="template-card" data-template="taxi" data-amount="1083" data-category="Такси">
         <div class="template-amount">-1083₽</div>
         <div class="template-divider"></div>
         <div class="template-icon">
-          <svg viewBox="0 0 36 36"><path d="M6 22h24v6H6z" stroke-linejoin="round"/><path d="M10 22V16l4-4h8l4 4v6" stroke-linejoin="round"/><circle cx="12" cy="28" r="2"/><circle cx="24" cy="28" r="2"/><path d="M14 16h8" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2M5 17a2 2 0 104 0M19 17a2 2 0 11-4 0"/></svg>
         </div>
         <div class="template-name">Такси</div>
       </div>
+      <div class="template-card" data-template="coffee" data-amount="360" data-category="Кофе">
+        <div class="template-amount">-360₽</div>
+        <div class="template-divider"></div>
+        <div class="template-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+        </div>
+        <div class="template-name">Кофе</div>
+      </div>
     </div>
 
-    <div class="operations-header">
-      <div class="section-title" style="margin:0">Последние операции</div>
-      <div class="see-all">Все</div>
+    <div class="transactions-header">
+      <div class="section-title">Последние операции</div>
+      <div class="transactions-all" id="allTransactionsBtn">Все</div>
     </div>
-    <div class="operation-list" id="operationList">
-      <div class="operation-item">
-        <div class="op-icon">
-          <svg viewBox="0 0 36 36"><path d="M18 6l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" stroke-linejoin="round"/><path d="M8 10l2 2M28 10l-2 2M18 28v4" stroke-linecap="round"/></svg>
+
+    <div class="transaction-list" id="transactionList">
+      <div class="transaction-item">
+        <div class="transaction-left">
+          <div class="transaction-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="transaction-info">
+            <h4>Развлечения</h4>
+            <p>18 окт, 20:00 · Кино</p>
+          </div>
         </div>
-        <div class="op-info">
-          <div class="op-name">Развлечения</div>
-          <div class="op-meta">18 окт, 20:00 · Кино</div>
-        </div>
-        <div class="op-amount">-650 ₽</div>
+        <div class="transaction-amount">-650 ₽</div>
       </div>
-      <div class="operation-item">
-        <div class="op-icon">
-          <svg viewBox="0 0 36 36"><path d="M6 22h24v6H6z" stroke-linejoin="round"/><path d="M10 22V16l4-4h8l4 4v6" stroke-linejoin="round"/><circle cx="12" cy="28" r="2"/><circle cx="24" cy="28" r="2"/></svg>
+      <div class="transaction-item">
+        <div class="transaction-left">
+          <div class="transaction-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2M5 17a2 2 0 104 0M19 17a2 2 0 11-4 0"/></svg>
+          </div>
+          <div class="transaction-info">
+            <h4>Такси</h4>
+            <p>Вчера, 22:40</p>
+          </div>
         </div>
-        <div class="op-info">
-          <div class="op-name">Такси</div>
-          <div class="op-meta">Вчера, 22:40</div>
-        </div>
-        <div class="op-amount">-1083 ₽</div>
+        <div class="transaction-amount">-1083 ₽</div>
       </div>
-      <div class="operation-item">
-        <div class="op-icon">
-          <svg viewBox="0 0 36 36"><path d="M8 18c0-4 4-7 10-7s10 3 10 7" stroke-linecap="round"/><path d="M6 18h24v4a4 4 0 01-4 4H10a4 4 0 01-4-4v-4z" stroke-linejoin="round"/><path d="M14 22c1 1 3 1 4 0s3-1 4 0" stroke-linecap="round"/></svg>
+      <div class="transaction-item">
+        <div class="transaction-left">
+          <div class="transaction-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2M5 17a2 2 0 104 0M19 17a2 2 0 11-4 0"/></svg>
+          </div>
+          <div class="transaction-info">
+            <h4>Такси</h4>
+            <p>Вчера, 22:40</p>
+          </div>
         </div>
-        <div class="op-info">
-          <div class="op-name">Мак</div>
-          <div class="op-meta">Вчера, 13:05 · Обед</div>
+        <div class="transaction-amount">-1083 ₽</div>
+      </div>
+      <div class="transaction-item">
+        <div class="transaction-left">
+          <div class="transaction-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+          </div>
+          <div class="transaction-info">
+            <h4>Мак</h4>
+            <p>Вчера, 13:05 · Обед</p>
+          </div>
         </div>
-        <div class="op-amount">-483 ₽</div>
+        <div class="transaction-amount">-483 ₽</div>
+      </div>
+      <div class="transaction-item">
+        <div class="transaction-left">
+          <div class="transaction-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+          </div>
+          <div class="transaction-info">
+            <h4>Мак</h4>
+            <p>Вчера, 13:05 · Обед</p>
+          </div>
+        </div>
+        <div class="transaction-amount">-483 ₽</div>
       </div>
     </div>
   </div>
 
-  <!-- ===== BOTTOM NAV ===== -->
-  <div class="bottom-nav" id="bottomNav">
-    <div class="nav-item active">
-      <svg viewBox="0 0 26 26" fill="none" stroke="#7BC4A0" stroke-width="1.8"><path d="M4 13V8a2 2 0 012-2h14a2 2 0 012 2v5" stroke-linecap="round"/><path d="M4 13l9-7 9 7" stroke-linejoin="round"/><path d="M6 13v7a2 2 0 002 2h10a2 2 0 002-2v-7" stroke-linejoin="round"/><circle cx="13" cy="18" r="2" fill="#7BC4A0" stroke="none"/></svg>
-      <span>Главная</span>
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 26 26" fill="none" stroke="#999" stroke-width="1.8"><rect x="5" y="4" width="16" height="18" rx="2" stroke-linejoin="round"/><path d="M9 9h8M9 13h8M9 17h5" stroke-linecap="round"/></svg>
-      <span>Отчёт</span>
-    </div>
-    <div class="nav-add" id="btnAddExpense">
-      <svg viewBox="0 0 28 28"><path d="M14 6v16M6 14h16" stroke-linecap="round"/></svg>
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 26 26" fill="none" stroke="#999" stroke-width="1.8"><circle cx="13" cy="13" r="9"/><path d="M10 10c1-1 3-1 4 0s3 1 4 0" stroke-linecap="round"/><circle cx="9" cy="14" r="1" fill="#999" stroke="none"/><circle cx="17" cy="14" r="1" fill="#999" stroke="none"/></svg>
-      <span>Тема</span>
-    </div>
-    <div class="nav-item">
-      <div class="nav-avatar">
-        <img id="navAvatarImg" src="" alt="Аватар">
-      </div>
-      <span>Профиль</span>
+  <!-- Right fixed panel with character -->
+  <div class="right-panel">
+    <div class="character-image" id="characterImage"></div>
+  </div>
+</div>
+
+<!-- Profile button -->
+<button class="profile-btn" id="profileBtn">
+  <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
+</button>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+  <div class="nav-wallet" id="navWallet">
+    <svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 010-4h14v4M3 5v14a2 2 0 002 2h16v-5M18 12a2 2 0 100 4 2 2 0 000-4z"/></svg>
+    <span id="walletBalance">17 520 ₽</span>
+  </div>
+  <div class="nav-item active" data-page="home">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Главная</span>
+  </div>
+  <div class="nav-item" data-page="report">
+    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M12 12h.01M12 16h.01M12 8h.01"/></svg>
+    <span>Отчёт</span>
+  </div>
+  <button class="nav-add-btn" id="navAddBtn">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+  <div class="nav-item" data-page="theme">
+    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 2a7 7 0 010 14 7 7 0 010-14z"/></svg>
+    <span>Тема</span>
+  </div>
+  <div class="nav-item" data-page="profile">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    <span>Профиль</span>
+  </div>
+</div>
+
+<!-- Overlay 1: Template expense -->
+<div class="overlay" id="templateOverlay">
+  <div class="overlay-header">
+    <button class="overlay-close" id="templateCloseBtn">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="overlay-calendar">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="18" cy="16" r="2"/></svg>
     </div>
   </div>
-
-  <!-- ===== OVERLAY: TEMPLATE ===== -->
-  <div class="overlay" id="overlayTemplate">
-    <div class="overlay-header">
-      <div class="btn-close" id="closeTemplate">
-        <svg viewBox="0 0 28 28"><path d="M7 7l14 14M21 7L7 21" stroke-linecap="round"/></svg>
-      </div>
-      <div class="btn-calendar">
-        <svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="3" stroke-linejoin="round"/><path d="M5 13h22" stroke-linecap="round"/><path d="M10 4v5M22 4v5" stroke-linecap="round"/><circle cx="22" cy="22" r="5" fill="#F5F5F7" stroke="#2D3436"/><path d="M22 20v2l1.5 1" stroke-linecap="round" stroke-width="1.2"/></svg>
-      </div>
-    </div>
-    <div class="overlay-amount">
-      <div class="overlay-amount-value" id="templateAmountDisplay">65 000 <span class="cur">₽</span></div>
-    </div>
-    <div class="selection-card">
-      <button class="select-btn" id="templateWalletBtn">
-        <div class="select-btn-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6" stroke-linecap="round" stroke-width="1.2"/><text x="12" y="15" text-anchor="middle" font-size="8" fill="#2D3436" stroke="none" font-weight="bold">₽</text></svg>
+  <div class="overlay-amount" id="templateAmountDisplay">65 000 ₽</div>
+  <div class="overlay-form">
+    <div class="form-field-wrapper">
+      <div class="form-field" id="templateWalletField">
+        <div class="form-field-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
         </div>
-        <div class="select-btn-text" id="templateWalletText">Выберите кошелёк</div>
-      </button>
-      <div class="arrow-down">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="form-field-text">Выберите кошелёк</div>
       </div>
-      <button class="select-btn filled" id="templateCategoryBtn">
-        <div class="select-btn-icon">
-          <svg viewBox="0 0 24 24"><path d="M4 14V10a2 2 0 012-2h12a2 2 0 012 2v4" stroke-linecap="round"/><path d="M4 14h16M8 14v4M16 14v4M10 8V6a2 2 0 012-2h0a2 2 0 012 2v2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="select-btn-text" id="templateCategoryText">Квартира</div>
-      </button>
+      <div class="wallet-dropdown" id="templateWalletDropdown">
+        <div class="wallet-option selected" data-wallet="main">Основной · 17 520 ₽</div>
+        <div class="wallet-option" data-wallet="savings">Накопления · 45 000 ₽</div>
+        <div class="wallet-option" data-wallet="cash">Наличные · 3 200 ₽</div>
+      </div>
     </div>
-    <div class="keypad" id="templateKeypad">
-      <button class="key" data-val="7">7</button>
-      <button class="key" data-val="8">8</button>
-      <button class="key" data-val="9">9</button>
-      <button class="key key-delete" id="templateDelete">
-        <svg viewBox="0 0 32 32"><path d="M10 8h14l6 8-6 8H10L4 16z" stroke-linejoin="round"/><path d="M14 13l6 6M20 13l-6 6" stroke-linecap="round"/></svg>
-      </button>
-      <button class="key" data-val="4">4</button>
-      <button class="key" data-val="5">5</button>
-      <button class="key" data-val="6">6</button>
-      <button class="key" data-val=".">.</button>
-      <button class="key" data-val="1">1</button>
-      <button class="key" data-val="2">2</button>
-      <button class="key" data-val="3">3</button>
-      <button class="key key-confirm" id="templateConfirm">
-        <svg viewBox="0 0 40 40"><path d="M10 20l8 8 14-16" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button class="key key-zero" data-val="0">0</button>
+    <div class="form-arrow">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </div>
+    <div class="form-field selected" id="templateCategoryField">
+      <div class="form-field-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 21V9l9-7 9 7v12M9 21v-6h6v6"/></svg>
+      </div>
+      <div class="form-field-text" id="templateCategoryText">Квартира</div>
     </div>
   </div>
+  <div class="keypad" id="templateKeypad">
+    <button class="key-btn" data-key="7">7</button>
+    <button class="key-btn" data-key="8">8</button>
+    <button class="key-btn" data-key="9">9</button>
+    <button class="key-btn delete" id="templateDeleteBtn">
+      <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+    </button>
+    <button class="key-btn" data-key="4">4</button>
+    <button class="key-btn" data-key="5">5</button>
+    <button class="key-btn" data-key="6">6</button>
+    <button class="key-btn" data-key=".">.</button>
+    <button class="key-btn" data-key="1">1</button>
+    <button class="key-btn" data-key="2">2</button>
+    <button class="key-btn" data-key="3">3</button>
+    <button class="key-btn confirm" id="templateConfirmBtn">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </button>
+    <button class="key-btn zero" data-key="0">0</button>
+  </div>
+</div>
 
-  <!-- ===== OVERLAY: ADD EXPENSE ===== -->
-  <div class="overlay" id="overlayAdd">
-    <div class="overlay-header">
-      <div class="btn-close" id="closeAdd">
-        <svg viewBox="0 0 28 28"><path d="M7 7l14 14M21 7L7 21" stroke-linecap="round"/></svg>
-      </div>
-      <div class="btn-calendar">
-        <svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="3" stroke-linejoin="round"/><path d="M5 13h22" stroke-linecap="round"/><path d="M10 4v5M22 4v5" stroke-linecap="round"/><circle cx="22" cy="22" r="5" fill="#F5F5F7" stroke="#2D3436"/><path d="M22 20v2l1.5 1" stroke-linecap="round" stroke-width="1.2"/></svg>
-      </div>
-    </div>
-    <div class="overlay-amount">
-      <div class="overlay-amount-value" id="addAmountDisplay">0 <span class="cur">₽</span></div>
-    </div>
-    <div class="selection-card">
-      <button class="select-btn" id="addWalletBtn">
-        <div class="select-btn-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><text x="12" y="15" text-anchor="middle" font-size="8" fill="#2D3436" stroke="none" font-weight="bold">₽</text></svg>
-        </div>
-        <div class="select-btn-text" id="addWalletText">Выберите кошелёк</div>
-      </button>
-      <div class="arrow-down">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <button class="select-btn" id="addCategoryBtn">
-        <div class="select-btn-icon">
-          <svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17" stroke-linecap="round" stroke-width="1.2"/><circle cx="12" cy="12" r="9"/></svg>
-        </div>
-        <div class="select-btn-text" id="addCategoryText">Выберите категорию</div>
-      </button>
-    </div>
-    <div class="keypad" id="addKeypad">
-      <button class="key" data-val="7">7</button>
-      <button class="key" data-val="8">8</button>
-      <button class="key" data-val="9">9</button>
-      <button class="key key-delete" id="addDelete">
-        <svg viewBox="0 0 32 32"><path d="M10 8h14l6 8-6 8H10L4 16z" stroke-linejoin="round"/><path d="M14 13l6 6M20 13l-6 6" stroke-linecap="round"/></svg>
-      </button>
-      <button class="key" data-val="4">4</button>
-      <button class="key" data-val="5">5</button>
-      <button class="key" data-val="6">6</button>
-      <button class="key" data-val=".">.</button>
-      <button class="key" data-val="1">1</button>
-      <button class="key" data-val="2">2</button>
-      <button class="key" data-val="3">3</button>
-      <button class="key key-confirm" id="addConfirm">
-        <svg viewBox="0 0 40 40"><path d="M10 20l8 8 14-16" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button class="key key-zero" data-val="0">0</button>
+<!-- Overlay 2: Add expense -->
+<div class="overlay" id="addOverlay">
+  <div class="overlay-header">
+    <button class="overlay-close" id="addCloseBtn">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="overlay-calendar">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="18" cy="16" r="2"/></svg>
     </div>
   </div>
-
-  <!-- ===== PICKER MODAL ===== -->
-  <div class="picker-overlay" id="pickerOverlay">
-    <div class="picker-sheet" id="pickerSheet">
-      <div class="picker-title" id="pickerTitle">Выберите</div>
-      <div id="pickerItems"></div>
+  <div class="overlay-amount" id="addAmountDisplay">0 ₽</div>
+  <div class="overlay-form">
+    <div class="form-field-wrapper">
+      <div class="form-field" id="addWalletField">
+        <div class="form-field-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <div class="form-field-text">Выберите кошелёк</div>
+      </div>
+      <div class="wallet-dropdown" id="addWalletDropdown">
+        <div class="wallet-option" data-wallet="main">Основной · 17 520 ₽</div>
+        <div class="wallet-option" data-wallet="savings">Накопления · 45 000 ₽</div>
+        <div class="wallet-option" data-wallet="cash">Наличные · 3 200 ₽</div>
+      </div>
+    </div>
+    <div class="form-arrow">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </div>
+    <div class="form-field" id="addCategoryField">
+      <div class="form-field-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      </div>
+      <div class="form-field-text">Выберите категорию</div>
     </div>
   </div>
-
-  <!-- ===== TOAST ===== -->
-  <div class="toast" id="toast"></div>
-
+  <div class="category-grid" id="categoryGrid">
+    <div class="category-option" data-cat="food">
+      <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
+      <span>Еда</span>
+    </div>
+    <div class="category-option" data-cat="transport">
+      <svg viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2"/></svg>
+      <span>Транспорт</span>
+    </div>
+    <div class="category-option" data-cat="entertainment">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <span>Развлечения</span>
+    </div>
+    <div class="category-option" data-cat="shopping">
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span>Покупки</span>
+    </div>
+    <div class="category-option" data-cat="health">
+      <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <span>Здоровье</span>
+    </div>
+    <div class="category-option" data-cat="other">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Другое</span>
+    </div>
+  </div>
+  <div class="keypad" id="addKeypad">
+    <button class="key-btn" data-key="7">7</button>
+    <button class="key-btn" data-key="8">8</button>
+    <button class="key-btn" data-key="9">9</button>
+    <button class="key-btn delete" id="addDeleteBtn">
+      <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+    </button>
+    <button class="key-btn" data-key="4">4</button>
+    <button class="key-btn" data-key="5">5</button>
+    <button class="key-btn" data-key="6">6</button>
+    <button class="key-btn" data-key=".">.</button>
+    <button class="key-btn" data-key="1">1</button>
+    <button class="key-btn" data-key="2">2</button>
+    <button class="key-btn" data-key="3">3</button>
+    <button class="key-btn confirm" id="addConfirmBtn">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </button>
+    <button class="key-btn zero" data-key="0">0</button>
+  </div>
 </div>
 
 <script>
-// Character image
-const characterURL = "https://i.imgur.com/YOUR_CHAR.png"; // placeholder, will be replaced
+  // State
+  let state = {
+    totalSpent: 12480,
+    monthlyLimit: 30000,
+    walletBalance: 17520,
+    transactions: [
+      { category: 'Развлечения', date: '18 окт, 20:00', note: 'Кино', amount: 650 },
+      { category: 'Такси', date: 'Вчера, 22:40', note: '', amount: 1083 },
+      { category: 'Такси', date: 'Вчера, 22:40', note: '', amount: 1083 },
+      { category: 'Мак', date: 'Вчера, 13:05', note: 'Обед', amount: 483 },
+      { category: 'Мак', date: 'Вчера, 13:05', note: 'Обед', amount: 483 }
+    ]
+  };
 
-// Generate character image
-(async function loadCharacter() {
-  try {
-    const resp = await fetch('https://api.qwen.ai/v1/images/generations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: "Anime girl with long blonde hair, green eyes, elf ears, wearing green and white outfit with dollar sign accessories, arms crossed, smiling, white background, full body illustration, detailed anime art style" })
+  // Format number with spaces
+  function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  // Update UI
+  function updateUI() {
+    document.getElementById('balanceAmount').textContent = formatNumber(state.totalSpent) + ' ₽';
+    document.getElementById('walletBalance').textContent = formatNumber(state.walletBalance) + ' ₽';
+    const pct = Math.min((state.totalSpent / state.monthlyLimit) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    renderTransactions();
+  }
+
+  function renderTransactions() {
+    const list = document.getElementById('transactionList');
+    list.innerHTML = '';
+    state.transactions.forEach(t => {
+      const noteStr = t.note ? ' · ' + t.note : '';
+      const item = document.createElement('div');
+      item.className = 'transaction-item';
+      item.innerHTML = `
+        <div class="transaction-left">
+          <div class="transaction-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+          </div>
+          <div class="transaction-info">
+            <h4>${t.category}</h4>
+            <p>${t.date}${noteStr}</p>
+          </div>
+        </div>
+        <div class="transaction-amount">-${formatNumber(t.amount)} ₽</div>
+      `;
+      list.appendChild(item);
     });
-  } catch(e) {}
-})();
+  }
 
-// Use the provided character image URL - we'll embed it as base64 or use a data approach
-// For now, let's use a generated placeholder approach with the image_gen tool result
-// Since we can't call tools from JS, let's use the image directly
+  // Overlay logic
+  const templateOverlay = document.getElementById('templateOverlay');
+  const addOverlay = document.getElementById('addOverlay');
 
-// State
-let state = {
-  templateAmount: '65000',
-  addAmount: '0',
-  templateWallet: null,
-  templateCategory: 'Квартира',
-  addWallet: null,
-  addCategory: null,
-  currentPicker: null,
-  operations: [
-    { name: 'Развлечения', meta: '18 окт, 20:00 · Кино', amount: 650, icon: 'party' },
-    { name: 'Такси', meta: 'Вчера, 22:40', amount: 1083, icon: 'taxi' },
-    { name: 'Мак', meta: 'Вчера, 13:05 · Обед', amount: 483, icon: 'food' }
-  ]
-};
+  function openOverlay(overlay) {
+    overlay.classList.add('active');
+  }
 
-const wallets = [
-  { name: 'Основной кошелёк', icon: 'wallet' },
-  { name: 'Накопительный', icon: 'wallet' },
-  { name: 'Наличные', icon: 'wallet' }
-];
+  function closeOverlay(overlay) {
+    overlay.classList.remove('active');
+  }
 
-const categories = [
-  { name: 'Квартира', icon: 'bed' },
-  { name: 'Продукты', icon: 'basket' },
-  { name: 'Такси', icon: 'taxi' },
-  { name: 'Развлечения', icon: 'party' },
-  { name: 'Здоровье', icon: 'health' },
-  { name: 'Одежда', icon: 'clothes' },
-  { name: 'Транспорт', icon: 'transport' },
-  { name: 'Другое', icon: 'other' }
-];
-
-// Format number with spaces
-function formatNum(n) {
-  if (!n || n === '0') return '0';
-  const parts = n.split('.');
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-  return parts.join('.');
-}
-
-function parseNum(s) {
-  return parseFloat(s.replace(/\s/g, '').replace(',', '.')) || 0;
-}
-
-// Set date
-function setDate() {
-  const days = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-  const d = new Date();
-  document.getElementById('greetingDate').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
-}
-setDate();
-
-// Character image - use the generated one
-const charImg = document.getElementById('characterImg');
-const navAvatar = document.getElementById('navAvatarImg');
-
-// We'll use image_gen to create the character
-// For now, create a SVG placeholder that looks like the character
-function createCharacterSVG() {
-  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
-    <defs>
-      <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#F5E6C8"/>
-        <stop offset="100%" stop-color="#E8D5A8"/>
-      </linearGradient>
-    </defs>
-    <!-- Hair back -->
-    <path d="M100,100 Q80,200 60,350 Q50,420 80,480 L120,490 Q100,400 110,300 Q120,200 150,120 Z" fill="url(#hg)"/>
-    <path d="M300,100 Q320,200 340,350 Q350,420 320,480 L280,490 Q300,400 290,300 Q280,200 250,120 Z" fill="url(#hg)"/>
-    <!-- Face -->
-    <ellipse cx="200" cy="160" rx="75" ry="90" fill="#FFF0E0"/>
-    <!-- Hair front -->
-    <path d="M130,100 Q150,60 200,55 Q250,60 270,100 Q260,80 240,75 Q220,70 200,72 Q180,70 160,75 Q140,80 130,100 Z" fill="#F5E6C8"/>
-    <path d="M140,110 Q160,90 180,95 L175,140 Q160,130 145,135 Z" fill="#F5E6C8"/>
-    <path d="M260,110 Q240,90 220,95 L225,140 Q240,130 255,135 Z" fill="#F5E6C8"/>
-    <!-- Eyes -->
-    <ellipse cx="170" cy="165" rx="18" ry="20" fill="#fff"/>
-    <ellipse cx="230" cy="165" rx="18" ry="20" fill="#fff"/>
-    <ellipse cx="172" cy="167" rx="12" ry="14" fill="#4CAF50"/>
-    <ellipse cx="232" cy="167" rx="12" ry="14" fill="#4CAF50"/>
-    <ellipse cx="174" cy="165" rx="6" ry="7" fill="#1a1a1a"/>
-    <ellipse cx="234" cy="165" rx="6" ry="7" fill="#1a1a1a"/>
-    <circle cx="178" cy="160" r="3" fill="#fff"/>
-    <circle cx="238" cy="160" r="3" fill="#fff"/>
-    <!-- Eyebrows -->
-    <path d="M155,148 Q170,142 185,148" stroke="#8B7355" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <path d="M215,148 Q230,142 245,148" stroke="#8B7355" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <!-- Nose -->
-    <path d="M198,185 Q200,190 202,185" stroke="#D4A574" stroke-width="1.5" fill="none"/>
-    <!-- Mouth - smile -->
-    <path d="M185,200 Q200,215 215,200" stroke="#E8737A" stroke-width="2.5" fill="#FFB0B5" stroke-linecap="round"/>
-    <!-- Ears (elf) -->
-    <path d="M125,155 L110,140 L128,170 Z" fill="#FFF0E0"/>
-    <path d="M275,155 L290,140 L272,170 Z" fill="#FFF0E0"/>
-    <!-- Body / outfit -->
-    <path d="M140,240 Q160,230 200,228 Q240,230 260,240 L270,350 Q260,400 240,450 L160,450 Q140,400 130,350 Z" fill="#fff"/>
-    <path d="M140,240 Q160,230 200,228 Q240,230 260,240 L255,260 Q240,250 200,248 Q160,250 145,260 Z" fill="#4CAF50"/>
-    <!-- Arms crossed -->
-    <path d="M140,260 Q120,300 130,340 Q140,360 170,350 Q180,330 175,300 Z" fill="#fff"/>
-    <path d="M260,260 Q280,300 270,340 Q260,360 230,350 Q220,330 225,300 Z" fill="#fff"/>
-    <!-- Dollar accessories -->
-    <circle cx="200" cy="110" r="14" fill="#4CAF50"/>
-    <text x="200" y="115" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">$</text>
-    <circle cx="270" cy="175" r="10" fill="#C8A84E"/>
-    <text x="270" y="179" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">$</text>
-    <!-- Choker -->
-    <rect x="175" y="220" width="50" height="8" rx="4" fill="#2E7D32"/>
-    <circle cx="200" cy="232" r="8" fill="#C8A84E"/>
-    <text x="200" y="236" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">$</text>
-  </svg>`)}`;
-}
-
-charImg.src = createCharacterSVG();
-navAvatar.src = createCharacterSVG();
-
-// ===== OVERLAY LOGIC =====
-const overlayTemplate = document.getElementById('overlayTemplate');
-const overlayAdd = document.getElementById('overlayAdd');
-const bottomNav = document.getElementById('bottomNav');
-
-function openOverlay(el) {
-  el.classList.add('active');
-  bottomNav.style.display = 'none';
-}
-function closeOverlay(el) {
-  el.classList.remove('active');
-  setTimeout(() => { bottomNav.style.display = 'flex'; }, 350);
-}
-
-// Template card clicks
-document.querySelectorAll('.template-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const amount = card.dataset.amount;
-    const category = card.dataset.category;
-    state.templateAmount = amount;
-    state.templateCategory = category;
-    updateTemplateDisplay();
-    openOverlay(overlayTemplate);
+  // Template card clicks
+  document.querySelectorAll('.template-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const amount = parseInt(card.dataset.amount);
+      const category = card.dataset.category;
+      document.getElementById('templateAmountDisplay').textContent = formatNumber(amount) + ' ₽';
+      document.getElementById('templateCategoryText').textContent = category;
+      templateAmount = amount.toString();
+      openOverlay(templateOverlay);
+    });
   });
-});
 
-// Add expense button
-document.getElementById('btnAddExpense').addEventListener('click', () => {
-  state.addAmount = '0';
-  state.addWallet = null;
-  state.addCategory = null;
-  updateAddDisplay();
-  openOverlay(overlayAdd);
-});
+  // Add button
+  document.getElementById('navAddBtn').addEventListener('click', () => {
+    addAmount = '';
+    document.getElementById('addAmountDisplay').textContent = '0 ₽';
+    openOverlay(addOverlay);
+  });
 
-// Close buttons
-document.getElementById('closeTemplate').addEventListener('click', () => closeOverlay(overlayTemplate));
-document.getElementById('closeAdd').addEventListener('click', () => closeOverlay(overlayAdd));
+  // Close buttons
+  document.getElementById('templateCloseBtn').addEventListener('click', () => closeOverlay(templateOverlay));
+  document.getElementById('addCloseBtn').addEventListener('click', () => closeOverlay(addOverlay));
 
-// Keypad logic
-function setupKeypad(keypadId, amountKey, displayId, deleteId) {
-  const keypad = document.getElementById(keypadId);
-  const display = document.getElementById(displayId);
-  const deleteBtn = document.getElementById(deleteId);
+  // Keypad logic
+  let templateAmount = '65000';
+  let addAmount = '';
 
-  keypad.querySelectorAll('.key[data-val]').forEach(key => {
-    key.addEventListener('click', () => {
-      const val = key.dataset.val;
-      let current = state[amountKey];
-      if (val === '.' && current.includes('.')) return;
-      if (current === '0' && val !== '.') {
-        current = val;
+  function updateTemplateDisplay() {
+    const val = templateAmount || '0';
+    const num = parseFloat(val);
+    document.getElementById('templateAmountDisplay').textContent = formatNumber(Math.floor(num)) + ' ₽';
+  }
+
+  function updateAddDisplay() {
+    const val = addAmount || '0';
+    const num = parseFloat(val);
+    document.getElementById('addAmountDisplay').textContent = formatNumber(Math.floor(num)) + ' ₽';
+  }
+
+  // Template keypad
+  document.querySelectorAll('#templateKeypad .key-btn[data-key]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.key;
+      if (key === '.') {
+        if (!templateAmount.includes('.')) templateAmount += '.';
       } else {
-        current += val;
+        if (templateAmount === '0') templateAmount = key;
+        else templateAmount += key;
       }
-      // Limit digits
-      if (current.replace('.','').length > 8) return;
-      state[amountKey] = current;
-      updateAmountDisplay(displayId, amountKey);
+      updateTemplateDisplay();
     });
   });
 
-  deleteBtn.addEventListener('click', () => {
-    let current = state[amountKey];
-    if (current.length <= 1) {
-      state[amountKey] = '0';
-    } else {
-      state[amountKey] = current.slice(0, -1);
+  document.getElementById('templateDeleteBtn').addEventListener('click', () => {
+    templateAmount = templateAmount.slice(0, -1);
+    updateTemplateDisplay();
+  });
+
+  document.getElementById('templateConfirmBtn').addEventListener('click', () => {
+    const amount = parseInt(templateAmount) || 0;
+    if (amount > 0) {
+      state.totalSpent += amount;
+      state.walletBalance = Math.max(0, state.walletBalance - amount);
+      const category = document.getElementById('templateCategoryText').textContent;
+      const now = new Date();
+      const dateStr = `${now.getDate()} ${['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'][now.getMonth()]}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      state.transactions.unshift({ category, date: dateStr, note: '', amount });
+      updateUI();
     }
-    updateAmountDisplay(displayId, amountKey);
+    closeOverlay(templateOverlay);
   });
-}
 
-function updateAmountDisplay(displayId, amountKey) {
-  const display = document.getElementById(displayId);
-  const val = state[amountKey];
-  const formatted = formatNum(val);
-  display.innerHTML = `${formatted} <span class="cur">₽</span>`;
-}
-
-function updateTemplateDisplay() {
-  updateAmountDisplay('templateAmountDisplay', 'templateAmount');
-  document.getElementById('templateCategoryText').textContent = state.templateCategory || 'Выберите категорию';
-  const catBtn = document.getElementById('templateCategoryBtn');
-  if (state.templateCategory) {
-    catBtn.classList.add('filled');
-  } else {
-    catBtn.classList.remove('filled');
-  }
-  if (state.templateWallet) {
-    document.getElementById('templateWalletText').textContent = state.templateWallet;
-    document.getElementById('templateWalletBtn').classList.add('filled');
-  } else {
-    document.getElementById('templateWalletText').textContent = 'Выберите кошелёк';
-    document.getElementById('templateWalletBtn').classList.remove('filled');
-  }
-}
-
-function updateAddDisplay() {
-  updateAmountDisplay('addAmountDisplay', 'addAmount');
-  if (state.addCategory) {
-    document.getElementById('addCategoryText').textContent = state.addCategory;
-    document.getElementById('addCategoryBtn').classList.add('filled');
-  } else {
-    document.getElementById('addCategoryText').textContent = 'Выберите категорию';
-    document.getElementById('addCategoryBtn').classList.remove('filled');
-  }
-  if (state.addWallet) {
-    document.getElementById('addWalletText').textContent = state.addWallet;
-    document.getElementById('addWalletBtn').classList.add('filled');
-  } else {
-    document.getElementById('addWalletText').textContent = 'Выберите кошелёк';
-    document.getElementById('addWalletBtn').classList.remove('filled');
-  }
-}
-
-setupKeypad('templateKeypad', 'templateAmount', 'templateAmountDisplay', 'templateDelete');
-setupKeypad('addKeypad', 'addAmount', 'addAmountDisplay', 'addDelete');
-
-// Picker
-const pickerOverlay = document.getElementById('pickerOverlay');
-const pickerTitle = document.getElementById('pickerTitle');
-const pickerItems = document.getElementById('pickerItems');
-
-function openPicker(type, callback) {
-  state.currentPicker = { type, callback };
-  pickerItems.innerHTML = '';
-  const items = type === 'wallet' ? wallets : categories;
-  pickerTitle.textContent = type === 'wallet' ? 'Выберите кошелёк' : 'Выберите категорию';
-  items.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'picker-item';
-    div.innerHTML = `
-      <div class="picker-item-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#2D3436" fill="none" stroke-width="1.5"/></svg>
-      </div>
-      <div class="picker-item-name">${item.name}</div>
-    `;
-    div.addEventListener('click', () => {
-      callback(item.name);
-      closePicker();
+  // Add keypad
+  document.querySelectorAll('#addKeypad .key-btn[data-key]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.key;
+      if (key === '.') {
+        if (!addAmount.includes('.')) addAmount += '.';
+      } else {
+        if (addAmount === '0') addAmount = key;
+        else addAmount += key;
+      }
+      updateAddDisplay();
     });
-    pickerItems.appendChild(div);
   });
-  pickerOverlay.classList.add('active');
-}
 
-function closePicker() {
-  pickerOverlay.classList.remove('active');
-}
-
-pickerOverlay.addEventListener('click', (e) => {
-  if (e.target === pickerOverlay) closePicker();
-});
-
-// Template wallet/category buttons
-document.getElementById('templateWalletBtn').addEventListener('click', () => {
-  openPicker('wallet', (name) => {
-    state.templateWallet = name;
-    updateTemplateDisplay();
-  });
-});
-document.getElementById('templateCategoryBtn').addEventListener('click', () => {
-  openPicker('category', (name) => {
-    state.templateCategory = name;
-    updateTemplateDisplay();
-  });
-});
-
-// Add wallet/category buttons
-document.getElementById('addWalletBtn').addEventListener('click', () => {
-  openPicker('wallet', (name) => {
-    state.addWallet = name;
+  document.getElementById('addDeleteBtn').addEventListener('click', () => {
+    addAmount = addAmount.slice(0, -1);
     updateAddDisplay();
   });
-});
-document.getElementById('addCategoryBtn').addEventListener('click', () => {
-  openPicker('category', (name) => {
-    state.addCategory = name;
-    updateAddDisplay();
+
+  document.getElementById('addConfirmBtn').addEventListener('click', () => {
+    const amount = parseInt(addAmount) || 0;
+    if (amount > 0) {
+      state.totalSpent += amount;
+      state.walletBalance = Math.max(0, state.walletBalance - amount);
+      const catField = document.getElementById('addCategoryField');
+      const catText = catField.querySelector('.form-field-text').textContent;
+      const category = catText === 'Выберите категорию' ? 'Другое' : catText;
+      const now = new Date();
+      const dateStr = `${now.getDate()} ${['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'][now.getMonth()]}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      state.transactions.unshift({ category, date: dateStr, note: '', amount });
+      updateUI();
+    }
+    closeOverlay(addOverlay);
   });
-});
 
-// Confirm buttons
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2000);
-}
+  // Wallet dropdowns
+  function setupWalletDropdown(fieldId, dropdownId) {
+    const field = document.getElementById(fieldId);
+    const dropdown = document.getElementById(dropdownId);
+    field.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.wallet-dropdown').forEach(d => d.classList.remove('show'));
+      dropdown.classList.toggle('show');
+    });
+    dropdown.querySelectorAll('.wallet-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        dropdown.querySelectorAll('.wallet-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        field.querySelector('.form-field-text').textContent = opt.textContent.split('·')[0].trim();
+        dropdown.classList.remove('show');
+      });
+    });
+  }
 
-document.getElementById('templateConfirm').addEventListener('click', () => {
-  const amount = parseNum(state.templateAmount);
-  if (amount <= 0) {
-    showToast('Введите сумму');
-    return;
-  }
-  if (!state.templateWallet) {
-    showToast('Выберите кошелёк');
-    return;
-  }
-  // Add to operations
-  const now = new Date();
-  const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-  state.operations.unshift({
-    name: state.templateCategory,
-    meta: `Сегодня, ${timeStr}`,
-    amount: amount,
-    icon: 'default'
+  setupWalletDropdown('templateWalletField', 'templateWalletDropdown');
+  setupWalletDropdown('addWalletField', 'addWalletDropdown');
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.wallet-dropdown').forEach(d => d.classList.remove('show'));
   });
-  renderOperations();
-  showToast(`Добавлено: -${formatNum(state.templateAmount)} ₽ (${state.templateCategory})`);
-  closeOverlay(overlayTemplate);
-});
 
-document.getElementById('addConfirm').addEventListener('click', () => {
-  const amount = parseNum(state.addAmount);
-  if (amount <= 0) {
-    showToast('Введите сумму');
-    return;
-  }
-  if (!state.addWallet) {
-    showToast('Выберите кошелёк');
-    return;
-  }
-  if (!state.addCategory) {
-    showToast('Выберите категорию');
-    return;
-  }
-  const now = new Date();
-  const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-  state.operations.unshift({
-    name: state.addCategory,
-    meta: `Сегодня, ${timeStr}`,
-    amount: amount,
-    icon: 'default'
+  // Category field - toggle category grid
+  document.getElementById('addCategoryField').addEventListener('click', () => {
+    document.getElementById('categoryGrid').classList.toggle('show');
   });
-  renderOperations();
-  showToast(`Добавлено: -${formatNum(state.addAmount)} ₽ (${state.addCategory})`);
-  closeOverlay(overlayAdd);
-});
 
-function renderOperations() {
-  const list = document.getElementById('operationList');
-  list.innerHTML = '';
-  state.operations.forEach(op => {
-    const item = document.createElement('div');
-    item.className = 'operation-item';
-    item.innerHTML = `
-      <div class="op-icon">
-        <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12" stroke="#2D3436" fill="none" stroke-width="1.5"/><path d="M14 18h8M18 14v8" stroke="#2D3436" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="op-info">
-        <div class="op-name">${op.name}</div>
-        <div class="op-meta">${op.meta}</div>
-      </div>
-      <div class="op-amount">-${formatNum(op.amount.toString())} ₽</div>
-    `;
-    list.appendChild(item);
+  document.querySelectorAll('.category-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.category-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      const name = opt.querySelector('span').textContent;
+      document.getElementById('addCategoryField').querySelector('.form-field-text').textContent = name;
+      document.getElementById('categoryGrid').classList.remove('show');
+    });
   });
-}
 
-// Initial display
-updateTemplateDisplay();
-updateAddDisplay();
+  // Nav items
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // Add template button
+  document.getElementById('addTemplateBtn').addEventListener('click', () => {
+    alert('Функция добавления шаблона будет реализована в следующем этапе');
+  });
+
+  // All transactions button
+  document.getElementById('allTransactionsBtn').addEventListener('click', () => {
+    alert('Полный список операций будет реализован в следующем этапе');
+  });
+
+  // Profile button
+  document.getElementById('profileBtn').addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.querySelector('[data-page="profile"]').classList.add('active');
+  });
+
+  // Initialize
+  updateUI();
 </script>
 </body>
 </html>
