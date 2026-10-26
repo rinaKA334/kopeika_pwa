@@ -13,28 +13,32 @@
     box-sizing: border-box;
   }
 
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
   body {
     font-family: 'Inter', sans-serif;
     background: #f5f5f7;
-    overflow: hidden;
-    width: 1920px;
-    height: 1200px;
-    position: relative;
   }
 
   .app-container {
     display: flex;
-    width: 1920px;
-    height: 1200px;
+    width: 100vw;
+    height: 100vh;
     position: relative;
   }
 
-  /* Left scrollable area */
+  /* ===== ЛЕВАЯ ПАНЕЛЬ (скроллится) ===== */
   .left-panel {
-    width: 720px;
-    height: 1200px;
+    width: 45%;
+    min-width: 380px;
+    max-width: 720px;
+    height: 100vh;
     overflow-y: auto;
-    padding: 40px 48px 120px 48px;
+    padding: 40px 48px 140px 48px;
     position: relative;
     z-index: 2;
     background: #f5f5f7;
@@ -44,32 +48,30 @@
     width: 0;
   }
 
-  /* Right fixed area */
+  /* ===== ПРАВАЯ ПАНЕЛЬ (фиксирована, с персонажем) ===== */
   .right-panel {
-    width: 1200px;
-    height: 1200px;
+    flex: 1;
     position: fixed;
     right: 0;
     top: 0;
+    width: 55%;
+    min-width: 600px;
+    height: 100vh;
     z-index: 1;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    overflow: hidden;
   }
 
+  /* ===== ПЕРСОНАЖ ===== */
   .character-image {
-    width: 1200px;
-    height: 1280px;
+    width: 100%;
+    height: 100%;
     background-image: url('desktop_picture_main.png');
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: bottom center;
-    position: absolute;
-    bottom: -80px;
-    right: 0;
+    background-position: center bottom;
   }
 
-  /* Date and greeting */
+  /* ===== ДАТА И ПРИВЕТСТВИЕ ===== */
   .date-text {
     font-size: 16px;
     color: #8e8e93;
@@ -83,13 +85,13 @@
     margin-bottom: 40px;
   }
 
-  /* Balance section */
+  /* ===== БАЛАНС ===== */
   .balance-section {
     margin-bottom: 40px;
   }
 
   .balance-amount {
-    font-size: 56px;
+    font-size: clamp(40px, 5vw, 56px);
     font-weight: 700;
     color: #1c1c1e;
     letter-spacing: -1px;
@@ -101,7 +103,6 @@
     margin-top: 4px;
   }
 
-  /* Progress bar */
   .progress-container {
     margin-top: 24px;
     margin-bottom: 8px;
@@ -130,8 +131,9 @@
     margin-top: 8px;
   }
 
-  /* Templates section */
-  .section-header {
+  /* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
+  .section-header,
+  .transactions-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,6 +168,7 @@
     border-color: #1c1c1e;
   }
 
+  /* ===== ШАБЛОНЫ ТРАТ ===== */
   .templates-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -175,7 +178,7 @@
   .template-card {
     background: #fff;
     border-radius: 20px;
-    padding: 20px 16px;
+    padding: 20px 12px;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s;
@@ -189,7 +192,7 @@
   }
 
   .template-amount {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #1c1c1e;
     margin-bottom: 12px;
@@ -220,20 +223,12 @@
   }
 
   .template-name {
-    font-size: 15px;
+    font-size: 14px;
     color: #1c1c1e;
     font-weight: 500;
   }
 
-  /* Transactions section */
-  .transactions-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 36px;
-    margin-bottom: 20px;
-  }
-
+  /* ===== ОПЕРАЦИИ ===== */
   .transactions-all {
     font-size: 18px;
     color: #1c1c1e;
@@ -270,6 +265,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    min-width: 0;
   }
 
   .transaction-icon {
@@ -280,6 +276,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
 
   .transaction-icon svg {
@@ -288,6 +285,10 @@
     stroke: #1c1c1e;
     fill: none;
     stroke-width: 1.5;
+  }
+
+  .transaction-info {
+    min-width: 0;
   }
 
   .transaction-info h4 {
@@ -306,9 +307,11 @@
     font-size: 18px;
     font-weight: 700;
     color: #1c1c1e;
+    white-space: nowrap;
+    margin-left: 12px;
   }
 
-  /* Bottom navigation */
+  /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
   .bottom-nav {
     position: fixed;
     bottom: 24px;
@@ -402,6 +405,7 @@
     justify-content: center;
     transition: all 0.2s;
     margin: 0 4px;
+    flex-shrink: 0;
   }
 
   .nav-add-btn:hover {
@@ -417,21 +421,54 @@
     stroke-width: 2.5;
   }
 
-  /* Overlay */
+  /* ===== КНОПКА ПРОФИЛЯ ===== */
+  .profile-btn {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    z-index: 50;
+    transition: all 0.2s;
+  }
+
+  .profile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .profile-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  /* ===== ОВЕРЛЕИ ===== */
   .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(245, 245, 247, 0.97);
+    background: rgba(245, 245, 247, 0.98);
     z-index: 200;
     display: none;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
+    padding: 40px 24px;
     opacity: 0;
     transition: opacity 0.3s ease;
+    overflow-y: auto;
   }
 
   .overlay.active {
@@ -490,7 +527,7 @@
   }
 
   .overlay-amount {
-    font-size: 72px;
+    font-size: clamp(48px, 8vw, 72px);
     font-weight: 700;
     color: #1c1c1e;
     margin-bottom: 40px;
@@ -504,6 +541,10 @@
     border-radius: 28px;
     padding: 24px;
     margin-bottom: 32px;
+  }
+
+  .form-field-wrapper {
+    position: relative;
   }
 
   .form-field {
@@ -542,6 +583,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
 
   .form-field-icon svg {
@@ -571,7 +613,7 @@
     stroke-width: 2;
   }
 
-  /* Keypad */
+  /* ===== КЛАВИАТУРА ===== */
   .keypad {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -651,7 +693,7 @@
     height: 100%;
   }
 
-  /* Wallet selector dropdown */
+  /* ===== ВЫПАДАЮЩИЙ СПИСОК КОШЕЛЬКОВ ===== */
   .wallet-dropdown {
     position: absolute;
     top: 100%;
@@ -687,19 +729,14 @@
     font-weight: 600;
   }
 
-  .form-field-wrapper {
-    position: relative;
-  }
-
-  /* Category selector */
+  /* ===== СЕТКА КАТЕГОРИЙ ===== */
   .category-grid {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     max-width: 600px;
     width: 100%;
     margin-bottom: 20px;
-    display: none;
   }
 
   .category-grid.show {
@@ -738,45 +775,55 @@
     font-size: 13px;
     color: #1c1c1e;
     font-weight: 500;
+    display: block;
   }
 
-  /* Profile button */
-  .profile-btn {
-    position: fixed;
-    top: 32px;
-    right: 32px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #fff;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    z-index: 50;
-    transition: all 0.2s;
+  /* ===== АДАПТИВ ===== */
+  @media (max-width: 1100px) {
+    .right-panel {
+      display: none;
+    }
+    .left-panel {
+      width: 100%;
+      max-width: 100%;
+    }
+    .templates-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
-  .profile-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  }
-
-  .profile-btn svg {
-    width: 24px;
-    height: 24px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
+  @media (max-width: 500px) {
+    .left-panel {
+      padding: 24px 20px 140px 20px;
+    }
+    .greeting {
+      font-size: 28px;
+    }
+    .templates-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .bottom-nav {
+      bottom: 12px;
+      padding: 10px 12px;
+      gap: 4px;
+    }
+    .nav-item {
+      min-width: 60px;
+      padding: 6px 10px;
+    }
+    .nav-wallet {
+      min-width: 70px;
+      padding: 6px 10px;
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- Left scrollable panel -->
+
+  <!-- ===== ЛЕВАЯ ПАНЕЛЬ (СКРОЛЛИТСЯ) ===== -->
   <div class="left-panel" id="leftPanel">
     <div class="date-text" id="currentDate">среда, 21 октября</div>
     <div class="greeting">Привет, user1234</div>
@@ -798,6 +845,8 @@
     </div>
 
     <div class="templates-grid" id="templatesGrid">
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Квартира (дом) -->
       <div class="template-card" data-template="apartment" data-amount="65000" data-category="Квартира">
         <div class="template-amount">-65000₽</div>
         <div class="template-divider"></div>
@@ -806,6 +855,8 @@
         </div>
         <div class="template-name">Квартира</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Продукты (корзина) -->
       <div class="template-card" data-template="groceries" data-amount="500" data-category="Продукты">
         <div class="template-amount">-500₽</div>
         <div class="template-divider"></div>
@@ -814,6 +865,8 @@
         </div>
         <div class="template-name">Продукты</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Такси (машина) -->
       <div class="template-card" data-template="taxi" data-amount="1083" data-category="Такси">
         <div class="template-amount">-1083₽</div>
         <div class="template-divider"></div>
@@ -822,6 +875,8 @@
         </div>
         <div class="template-name">Такси</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Кофе (чашка) -->
       <div class="template-card" data-template="coffee" data-amount="360" data-category="Кофе">
         <div class="template-amount">-360₽</div>
         <div class="template-divider"></div>
@@ -830,6 +885,7 @@
         </div>
         <div class="template-name">Кофе</div>
       </div>
+
     </div>
 
     <div class="transactions-header">
@@ -838,6 +894,8 @@
     </div>
 
     <div class="transaction-list" id="transactionList">
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Развлечения (слои/кино) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -850,6 +908,8 @@
         </div>
         <div class="transaction-amount">-650 ₽</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Такси (машина) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -862,6 +922,8 @@
         </div>
         <div class="transaction-amount">-1083 ₽</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Такси (машина) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -874,6 +936,8 @@
         </div>
         <div class="transaction-amount">-1083 ₽</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Мак / Фастфуд (смайлик) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -886,6 +950,8 @@
         </div>
         <div class="transaction-amount">-483 ₽</div>
       </div>
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Мак / Фастфуд (смайлик) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -898,60 +964,82 @@
         </div>
         <div class="transaction-amount">-483 ₽</div>
       </div>
+
     </div>
   </div>
 
-  <!-- Right fixed panel with character -->
+  <!-- ===== ПРАВАЯ ПАНЕЛЬ (ФИКСИРОВАНА) ===== -->
   <div class="right-panel">
     <div class="character-image" id="characterImage"></div>
   </div>
+
 </div>
 
-<!-- Profile button -->
+<!-- ЗАМЕНИТЕ ИКОНКУ: Профиль (человечек) — кнопка в правом верхнем углу -->
 <button class="profile-btn" id="profileBtn">
   <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>
 </button>
 
-<!-- Bottom Navigation -->
+<!-- ===== НИЖНЯЯ НАВИГАЦИЯ ===== -->
 <div class="bottom-nav">
+
+  <!-- ЗАМЕНИТЕ ИКОНКУ: Кошелёк (в навигации, слева) -->
   <div class="nav-wallet" id="navWallet">
     <svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 010-4h14v4M3 5v14a2 2 0 002 2h16v-5M18 12a2 2 0 100 4 2 2 0 000-4z"/></svg>
     <span id="walletBalance">17 520 ₽</span>
   </div>
+
+  <!-- ЗАМЕНИТЕ ИКОНКУ: Главная (домик) -->
   <div class="nav-item active" data-page="home">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     <span>Главная</span>
   </div>
+
+  <!-- ЗАМЕНИТЕ ИКОНКУ: Отчёт (документ) -->
   <div class="nav-item" data-page="report">
     <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M12 12h.01M12 16h.01M12 8h.01"/></svg>
     <span>Отчёт</span>
   </div>
+
+  <!-- ЗАМЕНИТЕ ИКОНКУ: Плюс (добавить трату) -->
   <button class="nav-add-btn" id="navAddBtn">
     <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
   </button>
+
+  <!-- ЗАМЕНИТЕ ИКОНКУ: Тема (круг/палитра) -->
   <div class="nav-item" data-page="theme">
     <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM12 2a7 7 0 010 14 7 7 0 010-14z"/></svg>
     <span>Тема</span>
   </div>
+
+  <!-- ЗАМЕНИТЕ ИКОНКУ: Профиль (часы/аватар) в навигации -->
   <div class="nav-item" data-page="profile">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
     <span>Профиль</span>
   </div>
+
 </div>
 
-<!-- Overlay 1: Template expense -->
+<!-- ===== ОВЕРЛЕЙ 1: ШАБЛОН ТРАТЫ ===== -->
 <div class="overlay" id="templateOverlay">
   <div class="overlay-header">
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Закрыть (крестик) — оверлей шаблона -->
     <button class="overlay-close" id="templateCloseBtn">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Календарь с часами (выбор даты) — оверлей шаблона -->
     <div class="overlay-calendar">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="18" cy="16" r="2"/></svg>
     </div>
+
   </div>
   <div class="overlay-amount" id="templateAmountDisplay">65 000 ₽</div>
   <div class="overlay-form">
     <div class="form-field-wrapper">
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Рубль/кошелёк (выбор кошелька) — оверлей шаблона -->
       <div class="form-field" id="templateWalletField">
         <div class="form-field-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
@@ -963,24 +1051,33 @@
         <div class="wallet-option" data-wallet="savings">Накопления · 45 000 ₽</div>
         <div class="wallet-option" data-wallet="cash">Наличные · 3 200 ₽</div>
       </div>
+
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Стрелка вниз (между полями) — оверлей шаблона -->
     <div class="form-arrow">
       <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Дом/категория (выбранная категория) — оверлей шаблона -->
     <div class="form-field selected" id="templateCategoryField">
       <div class="form-field-icon">
         <svg viewBox="0 0 24 24"><path d="M3 21V9l9-7 9 7v12M9 21v-6h6v6"/></svg>
       </div>
       <div class="form-field-text" id="templateCategoryText">Квартира</div>
     </div>
+
   </div>
   <div class="keypad" id="templateKeypad">
     <button class="key-btn" data-key="7">7</button>
     <button class="key-btn" data-key="8">8</button>
     <button class="key-btn" data-key="9">9</button>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Удалить символ (ластик) — оверлей шаблона -->
     <button class="key-btn delete" id="templateDeleteBtn">
       <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
     </button>
+
     <button class="key-btn" data-key="4">4</button>
     <button class="key-btn" data-key="5">5</button>
     <button class="key-btn" data-key="6">6</button>
@@ -988,26 +1085,36 @@
     <button class="key-btn" data-key="1">1</button>
     <button class="key-btn" data-key="2">2</button>
     <button class="key-btn" data-key="3">3</button>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Подтвердить (галочка) — оверлей шаблона -->
     <button class="key-btn confirm" id="templateConfirmBtn">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </button>
+
     <button class="key-btn zero" data-key="0">0</button>
   </div>
 </div>
 
-<!-- Overlay 2: Add expense -->
+<!-- ===== ОВЕРЛЕЙ 2: ДОБАВИТЬ ТРАТУ ===== -->
 <div class="overlay" id="addOverlay">
   <div class="overlay-header">
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Закрыть (крестик) — оверлей добавления -->
     <button class="overlay-close" id="addCloseBtn">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Календарь с часами (выбор даты) — оверлей добавления -->
     <div class="overlay-calendar">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="18" cy="16" r="2"/></svg>
     </div>
+
   </div>
   <div class="overlay-amount" id="addAmountDisplay">0 ₽</div>
   <div class="overlay-form">
     <div class="form-field-wrapper">
+
+      <!-- ЗАМЕНИТЕ ИКОНКУ: Рубль/кошелёк (выбор кошелька) — оверлей добавления -->
       <div class="form-field" id="addWalletField">
         <div class="form-field-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
@@ -1019,50 +1126,75 @@
         <div class="wallet-option" data-wallet="savings">Накопления · 45 000 ₽</div>
         <div class="wallet-option" data-wallet="cash">Наличные · 3 200 ₽</div>
       </div>
+
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Стрелка вниз (между полями) — оверлей добавления -->
     <div class="form-arrow">
       <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Тег/категория (выбор категории) — оверлей добавления -->
     <div class="form-field" id="addCategoryField">
       <div class="form-field-icon">
         <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
       </div>
       <div class="form-field-text">Выберите категорию</div>
     </div>
+
   </div>
+
+  <!-- СЕТКА КАТЕГОРИЙ -->
   <div class="category-grid" id="categoryGrid">
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Еда (коробка/пакет) -->
     <div class="category-option" data-cat="food">
       <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
       <span>Еда</span>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Транспорт (машина) -->
     <div class="category-option" data-cat="transport">
       <svg viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2"/></svg>
       <span>Транспорт</span>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Развлечения (слои) -->
     <div class="category-option" data-cat="entertainment">
       <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       <span>Развлечения</span>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Покупки (корзина) -->
     <div class="category-option" data-cat="shopping">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span>Покупки</span>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Здоровье (пульс) -->
     <div class="category-option" data-cat="health">
       <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       <span>Здоровье</span>
     </div>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Другое (информация) -->
     <div class="category-option" data-cat="other">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Другое</span>
     </div>
+
   </div>
+
   <div class="keypad" id="addKeypad">
     <button class="key-btn" data-key="7">7</button>
     <button class="key-btn" data-key="8">8</button>
     <button class="key-btn" data-key="9">9</button>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Удалить символ (ластик) — оверлей добавления -->
     <button class="key-btn delete" id="addDeleteBtn">
       <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
     </button>
+
     <button class="key-btn" data-key="4">4</button>
     <button class="key-btn" data-key="5">5</button>
     <button class="key-btn" data-key="6">6</button>
@@ -1070,15 +1202,18 @@
     <button class="key-btn" data-key="1">1</button>
     <button class="key-btn" data-key="2">2</button>
     <button class="key-btn" data-key="3">3</button>
+
+    <!-- ЗАМЕНИТЕ ИКОНКУ: Подтвердить (галочка) — оверлей добавления -->
     <button class="key-btn confirm" id="addConfirmBtn">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </button>
+
     <button class="key-btn zero" data-key="0">0</button>
   </div>
 </div>
 
 <script>
-  // State
+  // ===== СОСТОЯНИЕ ПРИЛОЖЕНИЯ =====
   let state = {
     totalSpent: 12480,
     monthlyLimit: 30000,
@@ -1092,12 +1227,12 @@
     ]
   };
 
-  // Format number with spaces
+  // Форматирование числа с пробелами
   function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   }
 
-  // Update UI
+  // Обновление интерфейса
   function updateUI() {
     document.getElementById('balanceAmount').textContent = formatNumber(state.totalSpent) + ' ₽';
     document.getElementById('walletBalance').textContent = formatNumber(state.walletBalance) + ' ₽';
@@ -1129,7 +1264,7 @@
     });
   }
 
-  // Overlay logic
+  // ===== ЛОГИКА ОВЕРЛЕЕВ =====
   const templateOverlay = document.getElementById('templateOverlay');
   const addOverlay = document.getElementById('addOverlay');
 
@@ -1141,7 +1276,7 @@
     overlay.classList.remove('active');
   }
 
-  // Template card clicks
+  // Клик по карточке шаблона
   document.querySelectorAll('.template-card').forEach(card => {
     card.addEventListener('click', () => {
       const amount = parseInt(card.dataset.amount);
@@ -1153,18 +1288,19 @@
     });
   });
 
-  // Add button
+  // Кнопка "+" в навигации
   document.getElementById('navAddBtn').addEventListener('click', () => {
     addAmount = '';
     document.getElementById('addAmountDisplay').textContent = '0 ₽';
+    document.getElementById('categoryGrid').classList.remove('show');
     openOverlay(addOverlay);
   });
 
-  // Close buttons
+  // Закрытие оверлеев
   document.getElementById('templateCloseBtn').addEventListener('click', () => closeOverlay(templateOverlay));
   document.getElementById('addCloseBtn').addEventListener('click', () => closeOverlay(addOverlay));
 
-  // Keypad logic
+  // ===== КЛАВИАТУРА =====
   let templateAmount = '65000';
   let addAmount = '';
 
@@ -1180,7 +1316,7 @@
     document.getElementById('addAmountDisplay').textContent = formatNumber(Math.floor(num)) + ' ₽';
   }
 
-  // Template keypad
+  // Клавиатура шаблона
   document.querySelectorAll('#templateKeypad .key-btn[data-key]').forEach(btn => {
     btn.addEventListener('click', () => {
       const key = btn.dataset.key;
@@ -1206,14 +1342,15 @@
       state.walletBalance = Math.max(0, state.walletBalance - amount);
       const category = document.getElementById('templateCategoryText').textContent;
       const now = new Date();
-      const dateStr = `${now.getDate()} ${['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'][now.getMonth()]}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+      const dateStr = `${now.getDate()} ${months[now.getMonth()]}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       state.transactions.unshift({ category, date: dateStr, note: '', amount });
       updateUI();
     }
     closeOverlay(templateOverlay);
   });
 
-  // Add keypad
+  // Клавиатура добавления
   document.querySelectorAll('#addKeypad .key-btn[data-key]').forEach(btn => {
     btn.addEventListener('click', () => {
       const key = btn.dataset.key;
@@ -1237,18 +1374,18 @@
     if (amount > 0) {
       state.totalSpent += amount;
       state.walletBalance = Math.max(0, state.walletBalance - amount);
-      const catField = document.getElementById('addCategoryField');
-      const catText = catField.querySelector('.form-field-text').textContent;
+      const catText = document.getElementById('addCategoryField').querySelector('.form-field-text').textContent;
       const category = catText === 'Выберите категорию' ? 'Другое' : catText;
       const now = new Date();
-      const dateStr = `${now.getDate()} ${['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'][now.getMonth()]}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+      const dateStr = `${now.getDate()} ${months[now.getMonth()]}, ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       state.transactions.unshift({ category, date: dateStr, note: '', amount });
       updateUI();
     }
     closeOverlay(addOverlay);
   });
 
-  // Wallet dropdowns
+  // ===== ВЫБОР КОШЕЛЬКА =====
   function setupWalletDropdown(fieldId, dropdownId) {
     const field = document.getElementById(fieldId);
     const dropdown = document.getElementById(dropdownId);
@@ -1274,7 +1411,7 @@
     document.querySelectorAll('.wallet-dropdown').forEach(d => d.classList.remove('show'));
   });
 
-  // Category field - toggle category grid
+  // ===== ВЫБОР КАТЕГОРИИ =====
   document.getElementById('addCategoryField').addEventListener('click', () => {
     document.getElementById('categoryGrid').classList.toggle('show');
   });
@@ -1289,7 +1426,7 @@
     });
   });
 
-  // Nav items
+  // ===== НАВИГАЦИЯ =====
   document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', () => {
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -1297,23 +1434,20 @@
     });
   });
 
-  // Add template button
   document.getElementById('addTemplateBtn').addEventListener('click', () => {
     alert('Функция добавления шаблона будет реализована в следующем этапе');
   });
 
-  // All transactions button
   document.getElementById('allTransactionsBtn').addEventListener('click', () => {
     alert('Полный список операций будет реализован в следующем этапе');
   });
 
-  // Profile button
   document.getElementById('profileBtn').addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     document.querySelector('[data-page="profile"]').classList.add('active');
   });
 
-  // Initialize
+  // Инициализация
   updateUI();
 </script>
 </body>
