@@ -4,8 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Учёт трат</title>
+
+<!-- ============================================ -->
+<!-- ПОДКЛЮЧЕНИЕ ШРИФТОВ -->
+<!-- ============================================ -->
+
+<!-- Nunito — для основного текста -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-  @import url('https://fonts.cdnfonts.com/css/nunito');
+  @font-face {
+    font-family: 'LT Remark';
+    src: url('LT-Remark-Regular.woff2') format('woff2'),
+         url('LT-Remark-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'LT Remark';
+    src: url('LT-Remark-Bold.woff2') format('woff2'),
+         url('LT-Remark-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+
+<style>
+  @import url('https://fonts.cdnfonts.com/css/lt-remark');
+</style>
+
+<style>
+  /* ============================================ */
+  /* НАСТРОЙКА ШРИФТОВ */
+  /* ============================================ */
+  
+  :root {
+    /* Основной шрифт для всего текста */
+    --font-main: 'Nunito', sans-serif;
+    
+    /* Акцентный шрифт для заголовков */
+    /* Если LT Remark не загрузился, используется fallback */
+    --font-accent: 'LT Remark', 'Nunito', sans-serif;
+  }
 
   * {
     margin: 0;
@@ -20,7 +64,8 @@
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    /* ОСНОВНОЙ ШРИФТ — применяется ко всему тексту */
+    font-family: var(--font-main);
     background: #f5f5f7;
   }
 
@@ -76,9 +121,12 @@
     font-size: 16px;
     color: #8e8e93;
     margin-bottom: 8px;
+    font-family: var(--font-main);
   }
 
   .greeting {
+    /* АКЦЕНТНЫЙ ШРИФТ — заголовок приветствия */
+    font-family: var(--font-accent);
     font-size: 36px;
     font-weight: 700;
     color: #1c1c1e;
@@ -91,6 +139,8 @@
   }
 
   .balance-amount {
+    /* АКЦЕНТНЫЙ ШРИФТ — сумма баланса */
+    font-family: var(--font-accent);
     font-size: clamp(40px, 5vw, 56px);
     font-weight: 700;
     color: #1c1c1e;
@@ -101,6 +151,7 @@
     font-size: 16px;
     color: #8e8e93;
     margin-top: 4px;
+    font-family: var(--font-main);
   }
 
   .progress-container {
@@ -129,6 +180,7 @@
     color: #8e8e93;
     text-align: right;
     margin-top: 8px;
+    font-family: var(--font-main);
   }
 
   /* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
@@ -142,6 +194,8 @@
   }
 
   .section-title {
+    /* АКЦЕНТНЫЙ ШРИФТ — заголовки секций */
+    font-family: var(--font-accent);
     font-size: 24px;
     font-weight: 700;
     color: #1c1c1e;
@@ -160,6 +214,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+    font-family: var(--font-main);
   }
 
   .section-add-btn:hover {
@@ -196,6 +251,7 @@
     font-weight: 700;
     color: #1c1c1e;
     margin-bottom: 12px;
+    font-family: var(--font-main);
   }
 
   .template-divider {
@@ -217,15 +273,13 @@
   .template-icon svg {
     width: 32px;
     height: 32px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
   }
 
   .template-name {
     font-size: 14px;
     color: #1c1c1e;
     font-weight: 500;
+    font-family: var(--font-main);
   }
 
   /* ===== ОПЕРАЦИИ ===== */
@@ -234,6 +288,7 @@
     color: #1c1c1e;
     cursor: pointer;
     font-weight: 500;
+    font-family: var(--font-main);
   }
 
   .transactions-all:hover {
@@ -279,12 +334,10 @@
     flex-shrink: 0;
   }
 
+  /* ИСПРАВЛЕНИЕ: убраны жесткие stroke/fill, чтобы работали inline-стили SVG */
   .transaction-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
+    width: 28px;
+    height: 28px;
   }
 
   .transaction-info {
@@ -295,12 +348,14 @@
     font-size: 16px;
     font-weight: 600;
     color: #1c1c1e;
+    font-family: var(--font-main);
   }
 
   .transaction-info p {
     font-size: 13px;
     color: #8e8e93;
     margin-top: 2px;
+    font-family: var(--font-main);
   }
 
   .transaction-amount {
@@ -309,6 +364,7 @@
     color: #1c1c1e;
     white-space: nowrap;
     margin-left: 12px;
+    font-family: var(--font-main);
   }
 
   /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
@@ -339,9 +395,6 @@
   .nav-wallet svg {
     width: 24px;
     height: 24px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
   }
 
   .nav-wallet span {
@@ -349,6 +402,7 @@
     font-weight: 600;
     color: #1c1c1e;
     margin-top: 2px;
+    font-family: var(--font-main);
   }
 
   .nav-item {
@@ -373,13 +427,6 @@
   .nav-item svg {
     width: 24px;
     height: 24px;
-    stroke: #8e8e93;
-    fill: none;
-    stroke-width: 1.5;
-  }
-
-  .nav-item.active svg {
-    stroke: #4caf7a;
   }
 
   .nav-item span {
@@ -387,6 +434,7 @@
     color: #8e8e93;
     margin-top: 4px;
     font-weight: 500;
+    font-family: var(--font-main);
   }
 
   .nav-item.active span {
@@ -416,9 +464,6 @@
   .nav-add-btn svg {
     width: 28px;
     height: 28px;
-    stroke: #fff;
-    fill: none;
-    stroke-width: 2.5;
   }
 
   /* ===== КНОПКА ПРОФИЛЯ ===== */
@@ -448,9 +493,6 @@
   .profile-btn svg {
     width: 24px;
     height: 24px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
   }
 
   /* ===== ОВЕРЛЕИ ===== */
@@ -527,6 +569,8 @@
   }
 
   .overlay-amount {
+    /* АКЦЕНТНЫЙ ШРИФТ — сумма в оверлее */
+    font-family: var(--font-accent);
     font-size: clamp(48px, 8vw, 72px);
     font-weight: 700;
     color: #1c1c1e;
@@ -598,6 +642,7 @@
     font-size: 20px;
     color: #1c1c1e;
     font-weight: 500;
+    font-family: var(--font-main);
   }
 
   .form-arrow {
@@ -637,6 +682,7 @@
     justify-content: center;
     transition: all 0.15s;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    font-family: var(--font-main);
   }
 
   .key-btn:hover {
@@ -717,6 +763,7 @@
     cursor: pointer;
     font-size: 16px;
     transition: background 0.15s;
+    font-family: var(--font-main);
   }
 
   .wallet-option:hover {
@@ -776,6 +823,7 @@
     color: #1c1c1e;
     font-weight: 500;
     display: block;
+    font-family: var(--font-main);
   }
 
   /* ===== АДАПТИВ ===== */
@@ -866,7 +914,7 @@
         <div class="template-divider"></div>
         <div class="template-icon">
           <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.85417 13.1038H9.25M3.85417 13.1038L5.64713 23.8739C6.26225 27.5647 6.57058 29.4116 7.86558 30.5093C9.1575 31.6038 11.0291 31.6038 14.7722 31.6038H14.7722H22.2278C25.9694 31.6038 27.8394 31.6038 29.1344 30.5077C30.4262 29.413 30.7339 27.5709 31.349 23.888L31.3513 23.8739L33.1458 13.1038M3.85417 13.1038H2.3125M9.25 13.1038H27.75M9.25 13.1038L13.875 5.39551M27.75 13.1038H33.1458M27.75 13.1038L23.125 5.39551M33.1458 13.1038H34.6875M18.5 19.2705V25.4372M24.6667 19.2705V25.4372M12.3333 19.2705V25.4372" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#25282E"/>
+          <path d="M3.85417 13.1038H9.25M3.85417 13.1038L5.64713 23.8739C6.26225 27.5647 6.57058 29.4116 7.86558 30.5093C9.1575 31.6038 11.0291 31.6038 14.7722 31.6038H14.7722H22.2278C25.9694 31.6038 27.8394 31.6038 29.1344 30.5077C30.4262 29.413 30.7339 27.5709 31.349 23.888L31.3513 23.8739L33.1458 13.1038M3.85417 13.1038H2.3125M9.25 13.1038H27.75M9.25 13.1038L13.875 5.39551M27.75 13.1038L23.125 5.39551M33.1458 13.1038H34.6875M18.5 19.2705V25.4372M24.6667 19.2705V25.4372M12.3333 19.2705V25.4372" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#25282E"/>
           </svg>
         </div>
         <div class="template-name">Продукты</div>
