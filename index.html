@@ -251,7 +251,7 @@
 
   <!-- Профиль (часы/аватар) в навигации -->
   <div class="nav-item" data-page="profile">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    <img class="nav-avatar" src="avatar.png" alt="">
     <span>Профиль</span>
   </div>
 
@@ -448,8 +448,38 @@
     <button class="key-btn zero" data-key="0">0</button>
   </div>
 </div>
+<!-- ===== ЗАГЛУШКА: ОЧИСТИТЬ ТРАТЫ? ===== -->
+<div class="modal-backdrop" id="clearModal">
+  <div class="modal-card confirm-card" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
+    <div class="confirm-title" id="clearModalTitle">Очистить траты?</div>
+    <button class="confirm-yes" id="clearConfirmBtn" title="Да, очистить" aria-label="Да, очистить">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </button>
+  </div>
+</div>
 
+<!-- ===== ЗАГЛУШКА: ПРОФИЛЬ ===== -->
+<div class="modal-backdrop" id="profileModal">
+  <div class="modal-card profile-card" role="dialog" aria-modal="true" aria-label="Профиль">
+    <button class="profile-close" id="profileCloseBtn" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24"><line x1="20" y1="4" x2="4" y2="20"/><line x1="4" y1="4" x2="20" y2="20"/></svg>
+    </button>
+    <div class="profile-body" id="profileBody">
+      <img class="profile-avatar" src="avatar.png" alt="Аватар">
+      <div class="profile-name">user1234</div>
+      <div class="profile-divider"></div>
+      <div class="profile-info">Тип учётной записи: стандартная</div>
+      <div class="profile-info">Тема: по умолчанию</div>
+      <button class="profile-logout" id="profileLogoutBtn">
+        <svg viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 00-2 2v12a2 2 0 002 2h3"/><path d="M13 8l4 4-4 4M17 12H8"/></svg>
+        Выйти
+      </button>
+    </div>
+    <div class="profile-arrow"></div>
+  </div>
+</div>
 <script>
+
   // ===== СОСТОЯНИЕ ПРИЛОЖЕНИЯ =====
   let state = {
     totalSpent: 12480,
@@ -534,9 +564,41 @@
   });
 
   // Закрытие оверлеев
-  document.getElementById('templateCloseBtn').addEventListener('click', () => closeOverlay(templateOverlay));
-  document.getElementById('addCloseBtn').addEventListener('click', () => closeOverlay(addOverlay));
+  // Крестик в калькуляторе -> заглушка «Очистить траты?»
+  const clearModal = document.getElementById('clearModal');
+  let clearTarget = null; // какой калькулятор сейчас закрываем
 
+  function askClear(target) {
+    clearTarget = target;
+    clearModal.classList.add('active');
+  }
+
+  function hideClearModal() {
+    clearModal.classList.remove('active');
+    clearTarget = null;
+  }
+
+  document.getElementById('templateCloseBtn').addEventListener('click', () => askClear('template'));
+  document.getElementById('addCloseBtn').addEventListener('click', () => askClear('add'));
+
+  // Галочка = согласие: калькулятор очищается и закрывается
+  document.getElementById('clearConfirmBtn').addEventListener('click', () => {
+    if (clearTarget === 'template') {
+      templateAmount = '';
+      updateTemplateDisplay();
+      closeOverlay(templateOverlay);
+    } else if (clearTarget === 'add') {
+      addAmount = '';
+      updateAddDisplay();
+      closeOverlay(addOverlay);
+    }
+    hideClearModal();
+  });
+
+  // Клик по затемнению = отказ, остаёмся в калькуляторе
+  clearModal.addEventListener('click', (e) => {
+    if (e.target === clearModal) hideClearModal();
+  });
   // ===== КЛАВИАТУРА =====
   let templateAmount = '65000';
   let addAmount = '';
@@ -686,6 +748,65 @@
   profileBtn.addEventListener('click', () => {
     rightPanel.classList.toggle('hidden');
   });
+// ===== ЗАГЛУШКА ПРОФИЛЯ (кнопка «Профиль» в нижней навигации) =====
+  const profileModal = document.getElementById('profileModal');
+
+  function closeProfileModal() {
+    profileModal.classList.remove('active');
+    // возвращаем подсветку на «Главная»
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.querySelector('.nav-item[data-page="home"]').classList.add('active');
+  }
+
+  const profileNavBtn = document.querySelector('.nav-item[data-page="profile"]');
+  const profileCard = profileModal.querySelector('.profile-card');
+  const profileBody = document.getElementById('profileBody');
+
+  // Ставим окно над кнопкой «Профиль», стрелочка смотрит на её центр
+  function positionProfilePopover() {
+    const r = profileNavBtn.getBoundingClientRect();
+    const gap = 16;      // расстояние до кнопки (включая стрелочку)
+    const margin = 12;   // отступ от краёв экрана
+    const w = profileCard.offsetWidth;
+    const centerX = r.left + r.width / 2;
+    const left = Math.max(margin, Math.min(centerX - w / 2, window.innerWidth - w - margin));
+
+    profileCard.style.left = left + 'px';
+    profileCard.style.bottom = (window.innerHeight - r.top + gap) + 'px';
+    profileCard.style.setProperty('--arrow-x', (centerX - left) + 'px');
+
+    // если экран низкий — прокручиваем содержимое внутри окна
+    const maxCard = r.top - gap - margin;
+    const paddings = profileCard.offsetHeight - profileBody.offsetHeight;
+    profileBody.style.maxHeight = Math.max(160, maxCard - paddings) + 'px';
+  }
+
+  profileNavBtn.addEventListener('click', () => {
+    profileModal.classList.add('active');
+    positionProfilePopover();
+  });
+
+  window.addEventListener('resize', () => {
+    if (profileModal.classList.contains('active')) positionProfilePopover();
+  });
+
+  document.getElementById('profileCloseBtn').addEventListener('click', closeProfileModal);
+  profileModal.addEventListener('click', (e) => {
+    if (e.target === profileModal) closeProfileModal();
+  });
+
+  document.getElementById('profileLogoutBtn').addEventListener('click', () => {
+    // TODO: выход из аккаунта
+    closeProfileModal();
+  });
+
+  // Esc закрывает заглушки
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (clearModal.classList.contains('active')) hideClearModal();
+    else if (profileModal.classList.contains('active')) closeProfileModal();
+  });
+
 
   // Инициализация
   updateUI();

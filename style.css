@@ -1,54 +1,54 @@
-@font-face {
+ @font-face {
     font-family: 'LT Remark';
     src: url('fonts/LTRemark-May2021.otf') format('otf');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
-}
-@font-face {
+  }
+  @font-face {
     font-family: 'LT Remark';
     src: url('fonts/LT-Remark-Bold3.otf') format('otf'),
-    url('fonts/LT-Remark-Bold-Italic.otf') format('otf'),
-    url('fonts/LT-Remark-Black3.otf') format('otf');
+         url('fonts/LT-Remark-Bold-Italic.otf') format('otf'),
+         url('fonts/LT-Remark-Black3.otf') format('otf');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
-}
+  }
 
-:root {
+  :root {
     /* Основной шрифт для всего текста */
     --font-main: 'Nunito', sans-serif;
-
+    
     /* Акцентный шрифт для заголовков */
     --font-accent: 'LT Remark', 'Nunito', sans-serif;
-}
+  }
 
-* {
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+  }
 
-html, body {
+  html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-}
+  }
 
-body {
+  body {
     font-family: var(--font-main);
     background: #f5f5f7;
-}
+  }
 
-.app-container {
+  .app-container {
     display: flex;
     width: 100vw;
     height: 100vh;
     position: relative;
-}
+  }
 
-/* ===== ЛЕВАЯ ПАНЕЛЬ (скроллится) ===== */
-.left-panel {
+  /* ===== ЛЕВАЯ ПАНЕЛЬ (скроллится) ===== */
+  .left-panel {
     width: 45%;
     min-width: 380px;
     max-width: 720px;
@@ -58,14 +58,14 @@ body {
     position: relative;
     z-index: 2;
     background: #f5f5f7;
-}
+  }
 
-.left-panel::-webkit-scrollbar {
+  .left-panel::-webkit-scrollbar {
     width: 0;
-}
+  }
 
-/* ===== ПРАВАЯ ПАНЕЛЬ (фиксирована, с персонажем) ===== */
-.right-panel {
+  /* ===== ПРАВАЯ ПАНЕЛЬ (фиксирована, с персонажем) ===== */
+  .right-panel {
     flex: 1;
     position: fixed;
     right: 0;
@@ -76,115 +76,107 @@ body {
     z-index: 1;
     overflow: hidden;
     transition: opacity 0.4s ease, transform 0.4s ease;
-}
+  }
 
-.right-panel.hidden {
+  .right-panel.hidden {
     opacity: 0;
     pointer-events: none;
     transform: translateX(20px);
-}
+  }
 
-/* ===== ПЕРСОНАЖ ===== */
-.character-image {
+  /* ===== ПЕРСОНАЖ ===== */
+  .character-image {
     width: 100%;
     height: 100%;
     background-image: url('desktop_picture_main.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
-}
-/* .character-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-  position: absolute;
-  top: 0;
-  left: 0;
-} */
-/* ===== ДАТА И ПРИВЕТСТВИЕ ===== */
-.date-text {
+  }
+
+  /* ===== ДАТА И ПРИВЕТСТВИЕ ===== */
+  .date-text {
     font-size: 16px;
     color: #8e8e93;
     margin-bottom: 8px;
     font-family: var(--font-main);
-}
+  }
 
-.greeting {
+  .greeting {
     font-family: var(--font-accent);
     font-size: 36px;
     font-weight: 700;
     color: #1c1c1e;
     margin-bottom: 40px;
-}
+  }
 
-/* ===== БАЛАНС ===== */
-.balance-section {
+  /* ===== БАЛАНС ===== */
+  .balance-section {
     margin-bottom: 40px;
-}
+  }
 
-.balance-amount {
+  .balance-amount {
     font-family: var(--font-accent);
     font-size: clamp(40px, 5vw, 56px);
     font-weight: 700;
     color: #1c1c1e;
     letter-spacing: -1px;
-}
+  }
 
-.balance-label {
+  .balance-label {
     font-size: 16px;
     color: #8e8e93;
     margin-top: 4px;
     font-family: var(--font-main);
-}
+  }
 
-.progress-container {
+  .progress-container {
     margin-top: 24px;
     margin-bottom: 8px;
-}
+  }
 
-.progress-bar {
+  .progress-bar {
     width: 100%;
     height: 12px;
     background: #e5e5ea;
     border-radius: 6px;
     overflow: hidden;
-}
+  }
 
-.progress-fill {
+  .progress-fill {
     height: 100%;
     width: 41.6%;
     background: linear-gradient(90deg, #7dd3a0 0%, #c8e64e 60%, #f0d040 100%);
     border-radius: 6px;
     transition: width 0.5s ease;
-}
+  }
 
-.progress-limit {
+  .progress-limit {
     font-size: 14px;
     color: #8e8e93;
     text-align: right;
     margin-top: 8px;
     font-family: var(--font-main);
-}
+  }
 
-/* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
-.section-header,
-.transactions-header {
+  /* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
+  .section-header,
+  .transactions-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     margin-top: 36px;
-}
+  }
 
-.section-title {
+  .section-title {
     font-family: var(--font-accent);
     font-size: 24px;
     font-weight: 700;
     color: #1c1c1e;
-}
+  }
 
-.section-add-btn {
+  .section-add-btn {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -198,22 +190,22 @@ body {
     justify-content: center;
     transition: all 0.2s;
     font-family: var(--font-main);
-}
+  }
 
-.section-add-btn:hover {
+  .section-add-btn:hover {
     background: #1c1c1e;
     color: #fff;
     border-color: #1c1c1e;
-}
+  }
 
-/* ===== ШАБЛОНЫ ТРАТ ===== */
-.templates-grid {
+  /* ===== ШАБЛОНЫ ТРАТ ===== */
+  .templates-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-}
+  }
 
-.template-card {
+  .template-card {
     background: #fff;
     border-radius: 20px;
     padding: 20px 12px;
@@ -221,70 +213,70 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     border: 2px solid transparent;
-}
+  }
 
-.template-card:hover {
+  .template-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     border-color: #7dd3a0;
-}
+  }
 
-.template-amount {
+  .template-amount {
     font-size: 18px;
     font-weight: 700;
     color: #1c1c1e;
     margin-bottom: 12px;
     font-family: var(--font-main);
-}
+  }
 
-.template-divider {
+  .template-divider {
     width: 40px;
     height: 2px;
     background: #e5e5ea;
     margin: 0 auto 12px;
-}
+  }
 
-.template-icon {
+  .template-icon {
     width: 40px;
     height: 40px;
     margin: 0 auto 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+  }
 
-.template-icon svg {
+  .template-icon svg {
     width: 32px;
     height: 32px;
-}
+  }
 
-.template-name {
+  .template-name {
     font-size: 14px;
     color: #1c1c1e;
     font-weight: 500;
     font-family: var(--font-main);
-}
+  }
 
-/* ===== ОПЕРАЦИИ ===== */
-.transactions-all {
+  /* ===== ОПЕРАЦИИ ===== */
+  .transactions-all {
     font-size: 18px;
     color: #1c1c1e;
     cursor: pointer;
     font-weight: 500;
     font-family: var(--font-main);
-}
+  }
 
-.transactions-all:hover {
+  .transactions-all:hover {
     color: #7dd3a0;
-}
+  }
 
-.transaction-list {
+  .transaction-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
+  }
 
-.transaction-item {
+  .transaction-item {
     background: #fff;
     border-radius: 20px;
     padding: 18px 24px;
@@ -293,20 +285,20 @@ body {
     justify-content: space-between;
     cursor: pointer;
     transition: all 0.2s;
-}
+  }
 
-.transaction-item:hover {
+  .transaction-item:hover {
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-}
+  }
 
-.transaction-left {
+  .transaction-left {
     display: flex;
     align-items: center;
     gap: 16px;
     min-width: 0;
-}
+  }
 
-.transaction-icon {
+  .transaction-icon {
     width: 44px;
     height: 44px;
     border-radius: 14px;
@@ -315,47 +307,47 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-}
+  }
 
-/* ИСПРАВЛЕНИЕ: SVG иконок операций — fill: none чтобы не было чёрных кругов */
-.transaction-icon svg {
+  /* ИСПРАВЛЕНИЕ: SVG иконок операций — fill: none чтобы не было чёрных кругов */
+  .transaction-icon svg {
     width: 28px;
     height: 28px;
     fill: none;
     stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;
-}
+  }
 
-.transaction-info {
+  .transaction-info {
     min-width: 0;
-}
+  }
 
-.transaction-info h4 {
+  .transaction-info h4 {
     font-size: 16px;
     font-weight: 600;
     color: #1c1c1e;
     font-family: var(--font-main);
-}
+  }
 
-.transaction-info p {
+  .transaction-info p {
     font-size: 13px;
     color: #8e8e93;
     margin-top: 2px;
     font-family: var(--font-main);
-}
+  }
 
-.transaction-amount {
+  .transaction-amount {
     font-size: 18px;
     font-weight: 700;
     color: #1c1c1e;
     white-space: nowrap;
     margin-left: 12px;
     font-family: var(--font-main);
-}
+  }
 
-/* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
-.bottom-nav {
+  /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
+  .bottom-nav {
     position: fixed;
     bottom: 24px;
     left: 50%;
@@ -368,31 +360,31 @@ body {
     gap: 8px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     z-index: 100;
-}
+  }
 
-.nav-wallet {
+  .nav-wallet {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 8px 16px;
     cursor: pointer;
     min-width: 80px;
-}
+  }
 
-.nav-wallet svg {
+  .nav-wallet svg {
     width: 24px;
     height: 24px;
-}
+  }
 
-.nav-wallet span {
+  .nav-wallet span {
     font-size: 13px;
     font-weight: 600;
     color: #1c1c1e;
     margin-top: 2px;
     font-family: var(--font-main);
-}
+  }
 
-.nav-item {
+  .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -401,34 +393,49 @@ body {
     border-radius: 20px;
     transition: all 0.2s;
     min-width: 72px;
-}
+  }
 
-.nav-item:hover {
+  .nav-item:hover {
     background: #f5f5f7;
-}
+  }
 
-.nav-item.active {
+  .nav-item.active {
     background: #e8f5ee;
-}
+  }
 
-.nav-item svg {
+  .nav-item svg {
     width: 24px;
     height: 24px;
-}
+  }
 
-.nav-item span {
+  .nav-item span {
     font-size: 12px;
     color: #8e8e93;
     margin-top: 4px;
     font-weight: 500;
     font-family: var(--font-main);
-}
+  }
 
-.nav-item.active span {
+  .nav-item.active span {
     color: #4caf7a;
-}
+  }
 
-.nav-add-btn {
+  /* Аватар вместо иконки в пункте «Профиль» */
+  .nav-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #9ea6b0;
+    background: #f5f5f7;
+    transition: border-color 0.2s;
+  }
+
+  .nav-item.active .nav-avatar {
+    border-color: #72C499;
+  }
+
+  .nav-add-btn {
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -441,20 +448,20 @@ body {
     transition: all 0.2s;
     margin: 0 4px;
     flex-shrink: 0;
-}
+  }
 
-.nav-add-btn:hover {
+  .nav-add-btn:hover {
     background: #6bc490;
     transform: scale(1.05);
-}
+  }
 
-.nav-add-btn svg {
+  .nav-add-btn svg {
     width: 28px;
     height: 28px;
-}
+  }
 
-/* ===== КНОПКА ПРОФИЛЯ ===== */
-.profile-btn {
+  /* ===== КНОПКА ПРОФИЛЯ ===== */
+  .profile-btn {
     position: fixed;
     top: 32px;
     right: 32px;
@@ -470,20 +477,20 @@ body {
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     z-index: 50;
     transition: all 0.2s;
-}
+  }
 
-.profile-btn:hover {
+  .profile-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
+  }
 
-.profile-btn svg {
+  .profile-btn svg {
     width: 24px;
     height: 24px;
-}
+  }
 
-/* ===== ОВЕРЛЕИ ===== */
-.overlay {
+  /* ===== ОВЕРЛЕИ ===== */
+  .overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -498,23 +505,23 @@ body {
     opacity: 0;
     transition: opacity 0.3s ease;
     overflow-y: auto;
-}
+  }
 
-.overlay.active {
+  .overlay.active {
     display: flex;
     opacity: 1;
-}
+  }
 
-.overlay-header {
+  .overlay-header {
     width: 100%;
     max-width: 600px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
-}
+  }
 
-.overlay-close {
+  .overlay-close {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -525,59 +532,59 @@ body {
     align-items: center;
     justify-content: center;
     transition: background 0.2s;
-}
+  }
 
-.overlay-close:hover {
+  .overlay-close:hover {
     background: #e5e5ea;
-}
+  }
 
-.overlay-close svg {
+  .overlay-close svg {
     width: 28px;
     height: 28px;
     stroke: #1c1c1e;
     stroke-width: 2;
-}
+  }
 
-.overlay-calendar {
+  .overlay-calendar {
     width: 48px;
     height: 48px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-}
+  }
 
-.overlay-calendar svg {
+  .overlay-calendar svg {
     width: 36px;
     height: 36px;
     stroke: #1c1c1e;
     fill: none;
     stroke-width: 1.5;
-}
+  }
 
-.overlay-amount {
+  .overlay-amount {
     font-family: var(--font-accent);
     font-size: clamp(48px, 8vw, 72px);
     font-weight: 700;
     color: #1c1c1e;
     margin-bottom: 40px;
     letter-spacing: -2px;
-}
+  }
 
-.overlay-form {
+  .overlay-form {
     width: 100%;
     max-width: 600px;
     background: #fff;
     border-radius: 28px;
     padding: 24px;
     margin-bottom: 32px;
-}
+  }
 
-.form-field-wrapper {
+  .form-field-wrapper {
     position: relative;
-}
+  }
 
-.form-field {
+  .form-field {
     background: #f5f5f7;
     border-radius: 20px;
     padding: 18px 24px;
@@ -587,25 +594,25 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     margin-bottom: 12px;
-}
+  }
 
-.form-field:last-child {
+  .form-field:last-child {
     margin-bottom: 0;
-}
+  }
 
-.form-field:hover {
+  .form-field:hover {
     background: #eee;
-}
+  }
 
-.form-field.selected {
+  .form-field.selected {
     background: #7dd3a0;
-}
+  }
 
-.form-field.selected .form-field-text {
+  .form-field.selected .form-field-text {
     color: #fff;
-}
+  }
 
-.form-field-icon {
+  .form-field-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -614,124 +621,125 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-}
+  }
 
-.form-field-icon svg {
+  .form-field-icon svg {
     width: 22px;
     height: 22px;
     stroke: #1c1c1e;
     fill: none;
     stroke-width: 1.5;
-}
+  }
 
-.form-field-text {
+  .form-field-text {
     font-size: 20px;
     color: #1c1c1e;
     font-weight: 500;
     font-family: var(--font-main);
-}
+  }
 
-.form-arrow {
+  .form-arrow {
     text-align: center;
     margin: 8px 0;
-}
+  }
 
-.form-arrow svg {
+  .form-arrow svg {
     width: 24px;
     height: 24px;
     stroke: #1c1c1e;
     fill: none;
     stroke-width: 2;
-}
+  }
 
-/* ===== КЛАВИАТУРА ===== */
+  /* ===== КЛАВИАТУРА ===== */
 .keypad {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 16px;
-    max-width: 560px;
-    width: 100%;
-    aspect-ratio: 4 / 3.2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 560px;
+  width: 100%;
+  padding: 16px; 
+  box-sizing: border-box;
 }
 
+/* Базовые стили */
 .key-btn {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: none;
-    background: #fff;
-    font-size: clamp(24px, 3vw, 32px);
-    font-weight: 500;
-    color: #1c1c1e;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    font-family: var(--font-main);
-    aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 500;
+  color: #1c1c1e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  font-family: var(--font-main);
+  box-sizing: border-box;
 }
 
-.key-btn:hover {
-    background: #f0f0f2;
-    transform: scale(1.02);
+/* Круглые кнопки - строго квадрат */
+.key-btn:not(.zero):not(.confirm) {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  width: min(100%, 100cqw); 
+  height: auto;
+  align-self: center;
+  justify-self: center;
 }
 
-.key-btn:active {
-    transform: scale(0.95);
-}
-
+/* Кнопка удаления */
 .key-btn.delete {
-    background: #ff6b6b;
-    color: #fff;
+  background: #ff6b6b;
+  color: #fff;
 }
-
-.key-btn.delete:hover {
-    background: #ff5252;
-}
-
+.key-btn.delete:hover { background: #ff5252; }
 .key-btn.delete svg {
-    width: 32px;
-    height: 32px;
-    stroke: #fff;
-    fill: none;
-    stroke-width: 2;
+  width: 32px;
+  height: 32px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
 }
 
+/* Кнопка подтверждения */
 .key-btn.confirm {
-    background: #7dd3a0;
-    color: #fff;
-    border-radius: 24px;
-    aspect-ratio: auto;
-    grid-row: 3 / 5;
-    grid-column: 4;
-    height: 100%;
+  background: #7dd3a0;
+  color: #fff;
+  border-radius: 24px;
+  grid-column: 4;
+  grid-row: 3 / 5;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto; 
 }
-
-.key-btn.confirm:hover {
-    background: #6bc490;
-}
-
+.key-btn.confirm:hover { background: #6bc490; }
 .key-btn.confirm svg {
-    width: 40px;
-    height: 40px;
-    stroke: #fff;
-    fill: none;
-    stroke-width: 2.5;
+  width: 40px;
+  height: 40px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
 }
 
+/* Кнопка ноль */
 .key-btn.zero {
-    grid-column: 1 / 3;
-    border-radius: 40px;
-    aspect-ratio: auto;
-    height: 100%;
-    width: 100%;
+  grid-column: 1 / span 3;
+  grid-row: 4;
+  border-radius: 40px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  justify-self: stretch;
+  align-self: stretch;
 }
 
-/* ===== ВЫПАДАЮЩИЙ СПИСОК КОШЕЛЬКОВ ===== */
-.wallet-dropdown {
+  /* ===== ВЫПАДАЮЩИЙ СПИСОК КОШЕЛЬКОВ ===== */
+  .wallet-dropdown {
     position: absolute;
     top: 100%;
     left: 0;
@@ -743,45 +751,45 @@ body {
     display: none;
     overflow: hidden;
     margin-top: 4px;
-}
+  }
 
-.wallet-dropdown.show {
+  .wallet-dropdown.show {
     display: block;
-}
+  }
 
-.wallet-option {
+  .wallet-option {
     padding: 14px 24px;
     cursor: pointer;
     font-size: 16px;
     transition: background 0.15s;
     font-family: var(--font-main);
-}
+  }
 
-.wallet-option:hover {
+  .wallet-option:hover {
     background: #f5f5f7;
-}
+  }
 
-.wallet-option.selected {
+  .wallet-option.selected {
     background: #e8f5ee;
     color: #4caf7a;
     font-weight: 600;
-}
+  }
 
-/* ===== СЕТКА КАТЕГОРИЙ ===== */
-.category-grid {
+  /* ===== СЕТКА КАТЕГОРИЙ ===== */
+  .category-grid {
     display: none;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     max-width: 600px;
     width: 100%;
     margin-bottom: 20px;
-}
+  }
 
-.category-grid.show {
+  .category-grid.show {
     display: grid;
-}
+  }
 
-.category-option {
+  .category-option {
     background: #fff;
     border-radius: 16px;
     padding: 16px;
@@ -789,70 +797,288 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     border: 2px solid transparent;
-}
+  }
 
-.category-option:hover {
+  .category-option:hover {
     border-color: #7dd3a0;
-}
+  }
 
-.category-option.selected {
+  .category-option.selected {
     border-color: #7dd3a0;
     background: #e8f5ee;
-}
+  }
 
-.category-option svg {
+  .category-option svg {
     width: 28px;
     height: 28px;
     stroke: #1c1c1e;
     fill: none;
     stroke-width: 1.5;
     margin-bottom: 6px;
-}
+  }
 
-.category-option span {
+  .category-option span {
     font-size: 13px;
     color: #1c1c1e;
     font-weight: 500;
     display: block;
     font-family: var(--font-main);
-}
+  }
 
-/* ===== АДАПТИВ ===== */
-@media (max-width: 1100px) {
+  /* ===== ЗАГЛУШКИ (МОДАЛЬНЫЕ ОКНА) ===== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 28, 30, 0.35);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
+  }
+
+  .modal-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-card {
+    position: relative;
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+    font-family: var(--font-accent);
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+  }
+
+  .modal-backdrop.active .modal-card {
+    transform: scale(1);
+  }
+
+  /* --- Подтверждение очистки --- */
+  .confirm-card {
+    width: 331px;
+    max-width: 100%;
+    height: 184px;
+    padding: 36px 32px;
+  }
+
+  .confirm-title {
+    font-size: 22px;
+    color: #000;
+    font-weight: 400;
+  }
+
+  .confirm-yes {
+    position: absolute;
+    right: 24px;
+    bottom: 22px;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    border: none;
+    background: #75c59b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .confirm-yes:hover {
+    background: #62b88b;
+    transform: scale(1.06);
+  }
+
+  .confirm-yes svg {
+    width: 34px;
+    height: 34px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* --- Профиль --- */
+  /* Профиль — всплывающее окно над кнопкой «Профиль» */
+  #profileModal {
+    background: transparent;
+    display: block;
+    padding: 0;
+  }
+
+  .profile-card {
+    position: fixed;
+    width: 520px;
+    max-width: calc(100vw - 24px);
+    padding: 44px 48px 48px;
+    left: 12px;
+    bottom: 100px;
+    transform-origin: var(--arrow-x, 50%) 100%;
+    transform: translateY(8px) scale(0.96);
+  }
+
+  #profileModal.active .profile-card {
+    transform: translateY(0) scale(1);
+  }
+
+  /* Стрелочка, указывающая на кнопку «Профиль» */
+  .profile-arrow {
+    position: absolute;
+    bottom: -9px;
+    left: var(--arrow-x, 50%);
+    width: 22px;
+    height: 22px;
+    margin-left: -11px;
+    background: #fff;
+    border-radius: 0 0 5px 0;
+    transform: rotate(45deg);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.06);
+  }
+
+  .profile-body {
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .profile-body::-webkit-scrollbar { width: 0; }
+
+  .profile-close {
+    position: absolute;
+    top: 40px;
+    right: 48px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .profile-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .profile-close svg {
+    width: 28px;
+    height: 28px;
+    stroke: #1c1c1e;
+    stroke-width: 1;
+    fill: none;
+  }
+
+  .profile-avatar {
+    display: block;
+    width: 192px;
+    height: 192px;
+    border-radius: 50%;
+    border: 3px solid #9ea6b0;
+    object-fit: cover;
+    background: #f5f5f7;
+  }
+
+  .profile-name {
+    width: 192px;
+    text-align: center;
+    font-size: 28px;
+    color: #000;
+    margin-top: 10px;
+  }
+
+  .profile-divider {
+    height: 2px;
+    background: #f5f5f5;
+    margin: 32px 0 28px;
+  }
+
+  .profile-info {
+    font-size: 20px;
+    color: #8e8e93;
+    margin-bottom: 18px;
+  }
+
+  .profile-logout {
+    margin: 6px 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 58px;
+    padding: 0 18px 0 14px;
+    border: none;
+    border-radius: 29px;
+    background: #ff6363;
+    color: #fff;
+    font-family: var(--font-accent);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .profile-logout:hover {
+    background: #ff4d4d;
+  }
+
+  .profile-logout svg {
+    width: 24px;
+    height: 24px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (max-width: 500px) {
+    .profile-card { padding: 32px 24px 32px; }
+    .profile-close { top: 28px; right: 24px; }
+  }
+
+  /* ===== АДАПТИВ ===== */
+  @media (max-width: 1100px) {
     .right-panel {
-        display: none;
+      display: none;
     }
     .left-panel {
-        width: 100%;
-        max-width: 100%;
+      width: 100%;
+      max-width: 100%;
     }
     .templates-grid {
-        grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
-}
+  }
 
-@media (max-width: 500px) {
+  @media (max-width: 500px) {
     .left-panel {
-        padding: 24px 20px 140px 20px;
+      padding: 24px 20px 140px 20px;
     }
     .greeting {
-        font-size: 28px;
+      font-size: 28px;
     }
     .templates-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
     .bottom-nav {
-        bottom: 12px;
-        padding: 10px 12px;
-        gap: 4px;
+      bottom: 12px;
+      padding: 10px 12px;
+      gap: 4px;
     }
     .nav-item {
-        min-width: 60px;
-        padding: 6px 10px;
+      min-width: 60px;
+      padding: 6px 10px;
     }
     .nav-wallet {
-        min-width: 70px;
-        padding: 6px 10px;
+      min-width: 70px;
+      padding: 6px 10px;
     }
-}
+  }
