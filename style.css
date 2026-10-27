@@ -85,14 +85,15 @@
   }
 
   /* ===== ПЕРСОНАЖ ===== */
-  .character-image {
-    width: 100%;
-    height: 100%;
-    background-image: url('desktop_picture_main.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center bottom;
-  }
+.character-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
   /* ===== ДАТА И ПРИВЕТСТВИЕ ===== */
   .date-text {
