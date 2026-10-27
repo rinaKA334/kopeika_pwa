@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Учёт трат</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учёт трат</title>
+    <link rel="stylesheet" href="style.css">
 
 <!-- ============================================ -->
 <!-- ПОДКЛЮЧЕНИЕ ШРИФТОВ -->
@@ -14,861 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<style>
-  @font-face {
-    font-family: 'LT Remark';
-    src: url('fonts/LTRemark-May2021.otf') format('otf');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'LT Remark';
-    src: url('fonts/LT-Remark-Bold3.otf') format('otf'),
-         url('fonts/LT-Remark-Bold-Italic.otf') format('otf'),
-         url('fonts/LT-Remark-Black3.otf') format('otf');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  :root {
-    /* Основной шрифт для всего текста */
-    --font-main: 'Nunito', sans-serif;
-    
-    /* Акцентный шрифт для заголовков */
-    --font-accent: 'LT Remark', 'Nunito', sans-serif;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  body {
-    font-family: var(--font-main);
-    background: #f5f5f7;
-  }
-
-  .app-container {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-  }
-
-  /* ===== ЛЕВАЯ ПАНЕЛЬ (скроллится) ===== */
-  .left-panel {
-    width: 45%;
-    min-width: 380px;
-    max-width: 720px;
-    height: 100vh;
-    overflow-y: auto;
-    padding: 40px 48px 140px 48px;
-    position: relative;
-    z-index: 2;
-    background: #f5f5f7;
-  }
-
-  .left-panel::-webkit-scrollbar {
-    width: 0;
-  }
-
-  /* ===== ПРАВАЯ ПАНЕЛЬ (фиксирована, с персонажем) ===== */
-  .right-panel {
-    flex: 1;
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: 55%;
-    min-width: 600px;
-    height: 100vh;
-    z-index: 1;
-    overflow: hidden;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-
-  .right-panel.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(20px);
-  }
-
-  /* ===== ПЕРСОНАЖ ===== */
-  .character-image {
-    width: 100%;
-    height: 100%;
-    background-image: url('desktop_picture_main.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center bottom;
-  }
-
-  /* ===== ДАТА И ПРИВЕТСТВИЕ ===== */
-  .date-text {
-    font-size: 16px;
-    color: #8e8e93;
-    margin-bottom: 8px;
-    font-family: var(--font-main);
-  }
-
-  .greeting {
-    font-family: var(--font-accent);
-    font-size: 36px;
-    font-weight: 700;
-    color: #1c1c1e;
-    margin-bottom: 40px;
-  }
-
-  /* ===== БАЛАНС ===== */
-  .balance-section {
-    margin-bottom: 40px;
-  }
-
-  .balance-amount {
-    font-family: var(--font-accent);
-    font-size: clamp(40px, 5vw, 56px);
-    font-weight: 700;
-    color: #1c1c1e;
-    letter-spacing: -1px;
-  }
-
-  .balance-label {
-    font-size: 16px;
-    color: #8e8e93;
-    margin-top: 4px;
-    font-family: var(--font-main);
-  }
-
-  .progress-container {
-    margin-top: 24px;
-    margin-bottom: 8px;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 12px;
-    background: #e5e5ea;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    width: 41.6%;
-    background: linear-gradient(90deg, #7dd3a0 0%, #c8e64e 60%, #f0d040 100%);
-    border-radius: 6px;
-    transition: width 0.5s ease;
-  }
-
-  .progress-limit {
-    font-size: 14px;
-    color: #8e8e93;
-    text-align: right;
-    margin-top: 8px;
-    font-family: var(--font-main);
-  }
-
-  /* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
-  .section-header,
-  .transactions-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    margin-top: 36px;
-  }
-
-  .section-title {
-    font-family: var(--font-accent);
-    font-size: 24px;
-    font-weight: 700;
-    color: #1c1c1e;
-  }
-
-  .section-add-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid #d1d1d6;
-    background: transparent;
-    font-size: 22px;
-    color: #1c1c1e;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    font-family: var(--font-main);
-  }
-
-  .section-add-btn:hover {
-    background: #1c1c1e;
-    color: #fff;
-    border-color: #1c1c1e;
-  }
-
-  /* ===== ШАБЛОНЫ ТРАТ ===== */
-  .templates-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-
-  .template-card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-  }
-
-  .template-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    border-color: #7dd3a0;
-  }
-
-  .template-amount {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1c1c1e;
-    margin-bottom: 12px;
-    font-family: var(--font-main);
-  }
-
-  .template-divider {
-    width: 40px;
-    height: 2px;
-    background: #e5e5ea;
-    margin: 0 auto 12px;
-  }
-
-  .template-icon {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .template-icon svg {
-    width: 32px;
-    height: 32px;
-  }
-
-  .template-name {
-    font-size: 14px;
-    color: #1c1c1e;
-    font-weight: 500;
-    font-family: var(--font-main);
-  }
-
-  /* ===== ОПЕРАЦИИ ===== */
-  .transactions-all {
-    font-size: 18px;
-    color: #1c1c1e;
-    cursor: pointer;
-    font-weight: 500;
-    font-family: var(--font-main);
-  }
-
-  .transactions-all:hover {
-    color: #7dd3a0;
-  }
-
-  .transaction-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .transaction-item {
-    background: #fff;
-    border-radius: 20px;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .transaction-item:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-  }
-
-  .transaction-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    min-width: 0;
-  }
-
-  .transaction-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    background: #f5f5f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  /* ИСПРАВЛЕНИЕ: SVG иконок операций — fill: none чтобы не было чёрных кругов */
-  .transaction-icon svg {
-    width: 28px;
-    height: 28px;
-    fill: none;
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .transaction-info {
-    min-width: 0;
-  }
-
-  .transaction-info h4 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1c1c1e;
-    font-family: var(--font-main);
-  }
-
-  .transaction-info p {
-    font-size: 13px;
-    color: #8e8e93;
-    margin-top: 2px;
-    font-family: var(--font-main);
-  }
-
-  .transaction-amount {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1c1c1e;
-    white-space: nowrap;
-    margin-left: 12px;
-    font-family: var(--font-main);
-  }
-
-  /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
-  .bottom-nav {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    border-radius: 32px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    z-index: 100;
-  }
-
-  .nav-wallet {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 16px;
-    cursor: pointer;
-    min-width: 80px;
-  }
-
-  .nav-wallet svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .nav-wallet span {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1c1c1e;
-    margin-top: 2px;
-    font-family: var(--font-main);
-  }
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: all 0.2s;
-    min-width: 72px;
-  }
-
-  .nav-item:hover {
-    background: #f5f5f7;
-  }
-
-  .nav-item.active {
-    background: #e8f5ee;
-  }
-
-  .nav-item svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .nav-item span {
-    font-size: 12px;
-    color: #8e8e93;
-    margin-top: 4px;
-    font-weight: 500;
-    font-family: var(--font-main);
-  }
-
-  .nav-item.active span {
-    color: #4caf7a;
-  }
-
-  .nav-add-btn {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #7dd3a0;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    margin: 0 4px;
-    flex-shrink: 0;
-  }
-
-  .nav-add-btn:hover {
-    background: #6bc490;
-    transform: scale(1.05);
-  }
-
-  .nav-add-btn svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  /* ===== КНОПКА ПРОФИЛЯ ===== */
-  .profile-btn {
-    position: fixed;
-    top: 32px;
-    right: 32px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #fff;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    z-index: 50;
-    transition: all 0.2s;
-  }
-
-  .profile-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  }
-
-  .profile-btn svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  /* ===== ОВЕРЛЕИ ===== */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(245, 245, 247, 0.98);
-    z-index: 200;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 24px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    overflow-y: auto;
-  }
-
-  .overlay.active {
-    display: flex;
-    opacity: 1;
-  }
-
-  .overlay-header {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-  }
-
-  .overlay-close {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-  }
-
-  .overlay-close:hover {
-    background: #e5e5ea;
-  }
-
-  .overlay-close svg {
-    width: 28px;
-    height: 28px;
-    stroke: #1c1c1e;
-    stroke-width: 2;
-  }
-
-  .overlay-calendar {
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .overlay-calendar svg {
-    width: 36px;
-    height: 36px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
-  }
-
-  .overlay-amount {
-    font-family: var(--font-accent);
-    font-size: clamp(48px, 8vw, 72px);
-    font-weight: 700;
-    color: #1c1c1e;
-    margin-bottom: 40px;
-    letter-spacing: -2px;
-  }
-
-  .overlay-form {
-    width: 100%;
-    max-width: 600px;
-    background: #fff;
-    border-radius: 28px;
-    padding: 24px;
-    margin-bottom: 32px;
-  }
-
-  .form-field-wrapper {
-    position: relative;
-  }
-
-  .form-field {
-    background: #f5f5f7;
-    border-radius: 20px;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 12px;
-  }
-
-  .form-field:last-child {
-    margin-bottom: 0;
-  }
-
-  .form-field:hover {
-    background: #eee;
-  }
-
-  .form-field.selected {
-    background: #7dd3a0;
-  }
-
-  .form-field.selected .form-field-text {
-    color: #fff;
-  }
-
-  .form-field-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .form-field-icon svg {
-    width: 22px;
-    height: 22px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
-  }
-
-  .form-field-text {
-    font-size: 20px;
-    color: #1c1c1e;
-    font-weight: 500;
-    font-family: var(--font-main);
-  }
-
-  .form-arrow {
-    text-align: center;
-    margin: 8px 0;
-  }
-
-  .form-arrow svg {
-    width: 24px;
-    height: 24px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 2;
-  }
-
-  /* ===== КЛАВИАТУРА ===== */
-  .keypad {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 16px;
-    max-width: 560px;
-    width: 100%;
-    aspect-ratio: 4 / 3.2;
-  }
-
-  .key-btn {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: none;
-    background: #fff;
-    font-size: clamp(24px, 3vw, 32px);
-    font-weight: 500;
-    color: #1c1c1e;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    font-family: var(--font-main);
-    aspect-ratio: 1;
-  }
-
-  .key-btn:hover {
-    background: #f0f0f2;
-    transform: scale(1.02);
-  }
-
-  .key-btn:active {
-    transform: scale(0.95);
-  }
-
-  .key-btn.delete {
-    background: #ff6b6b;
-    color: #fff;
-  }
-
-  .key-btn.delete:hover {
-    background: #ff5252;
-  }
-
-  .key-btn.delete svg {
-    width: 32px;
-    height: 32px;
-    stroke: #fff;
-    fill: none;
-    stroke-width: 2;
-  }
-
-  .key-btn.confirm {
-    background: #7dd3a0;
-    color: #fff;
-    border-radius: 24px;
-    aspect-ratio: auto;
-    grid-row: 3 / 5;
-    grid-column: 4;
-    height: 100%;
-  }
-
-  .key-btn.confirm:hover {
-    background: #6bc490;
-  }
-
-  .key-btn.confirm svg {
-    width: 40px;
-    height: 40px;
-    stroke: #fff;
-    fill: none;
-    stroke-width: 2.5;
-  }
-
-  .key-btn.zero {
-    grid-column: 1 / 3;
-    border-radius: 40px;
-    aspect-ratio: auto;
-    height: 100%;
-    width: 100%;
-  }
-
-  /* ===== ВЫПАДАЮЩИЙ СПИСОК КОШЕЛЬКОВ ===== */
-  .wallet-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    z-index: 10;
-    display: none;
-    overflow: hidden;
-    margin-top: 4px;
-  }
-
-  .wallet-dropdown.show {
-    display: block;
-  }
-
-  .wallet-option {
-    padding: 14px 24px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.15s;
-    font-family: var(--font-main);
-  }
-
-  .wallet-option:hover {
-    background: #f5f5f7;
-  }
-
-  .wallet-option.selected {
-    background: #e8f5ee;
-    color: #4caf7a;
-    font-weight: 600;
-  }
-
-  /* ===== СЕТКА КАТЕГОРИЙ ===== */
-  .category-grid {
-    display: none;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    max-width: 600px;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .category-grid.show {
-    display: grid;
-  }
-
-  .category-option {
-    background: #fff;
-    border-radius: 16px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-  }
-
-  .category-option:hover {
-    border-color: #7dd3a0;
-  }
-
-  .category-option.selected {
-    border-color: #7dd3a0;
-    background: #e8f5ee;
-  }
-
-  .category-option svg {
-    width: 28px;
-    height: 28px;
-    stroke: #1c1c1e;
-    fill: none;
-    stroke-width: 1.5;
-    margin-bottom: 6px;
-  }
-
-  .category-option span {
-    font-size: 13px;
-    color: #1c1c1e;
-    font-weight: 500;
-    display: block;
-    font-family: var(--font-main);
-  }
-
-  /* ===== АДАПТИВ ===== */
-  @media (max-width: 1100px) {
-    .right-panel {
-      display: none;
-    }
-    .left-panel {
-      width: 100%;
-      max-width: 100%;
-    }
-    .templates-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 500px) {
-    .left-panel {
-      padding: 24px 20px 140px 20px;
-    }
-    .greeting {
-      font-size: 28px;
-    }
-    .templates-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    .bottom-nav {
-      bottom: 12px;
-      padding: 10px 12px;
-      gap: 4px;
-    }
-    .nav-item {
-      min-width: 60px;
-      padding: 6px 10px;
-    }
-    .nav-wallet {
-      min-width: 70px;
-      padding: 6px 10px;
-    }
-  }
-</style>
-</head>
 <body>
-
 <div class="app-container">
 
   <!-- ===== ЛЕВАЯ ПАНЕЛЬ (СКРОЛЛИТСЯ) ===== -->
@@ -894,7 +41,7 @@
 
     <div class="templates-grid" id="templatesGrid">
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Квартира (дом) -->
+      <!-- Квартира (дом) -->
       <div class="template-card" data-template="apartment" data-amount="65000" data-category="Квартира">
         <div class="template-amount">-65000₽</div>
         <div class="template-divider"></div>
@@ -908,7 +55,7 @@
         <div class="template-name">Квартира</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Продукты (корзина) -->
+      <!-- Продукты (корзина) -->
       <div class="template-card" data-template="groceries" data-amount="500" data-category="Продукты">
         <div class="template-amount">-500₽</div>
         <div class="template-divider"></div>
@@ -920,7 +67,7 @@
         <div class="template-name">Продукты</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Такси (машина) -->
+      <!-- Такси (машина) -->
       <div class="template-card" data-template="taxi" data-amount="1083" data-category="Такси">
         <div class="template-amount">-1083₽</div>
         <div class="template-divider"></div>
@@ -932,7 +79,7 @@
         <div class="template-name">Такси</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Кофе (чашка) -->
+      <!-- Кофе (чашка) -->
       <div class="template-card" data-template="coffee" data-amount="360" data-category="Кофе">
         <div class="template-amount">-360₽</div>
         <div class="template-divider"></div>
@@ -953,7 +100,7 @@
 
     <div class="transaction-list" id="transactionList">
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Развлечения (слои/кино) -->
+      <!-- Развлечения (слои/кино) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -969,7 +116,7 @@
         <div class="transaction-amount">-650 ₽</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Такси (машина) -->
+      <!-- Такси (машина) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -985,7 +132,7 @@
         <div class="transaction-amount">-1083 ₽</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Такси (машина) -->
+      <!-- Такси (машина) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -1001,7 +148,7 @@
         <div class="transaction-amount">-1083 ₽</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Мак / Фастфуд (смайлик) -->
+      <!-- Мак / Фастфуд (смайлик) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -1018,7 +165,7 @@
         <div class="transaction-amount">-483 ₽</div>
       </div>
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Мак / Фастфуд (смайлик) -->
+      <!-- Мак / Фастфуд (смайлик) -->
       <div class="transaction-item">
         <div class="transaction-left">
           <div class="transaction-icon">
@@ -1045,7 +192,7 @@
 
 </div>
 
-<!-- ЗАМЕНИТЕ ИКОНКУ: Профиль (человечек) — кнопка в правом верхнем углу (скрывает/показывает персонажа) -->
+<!-- Профиль (человечек) — кнопка в правом верхнем углу (скрывает/показывает персонажа) -->
 <button class="profile-btn" id="profileBtn" title="Скрыть/показать персонажа">
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M15.7417 18.2224L14.0833 18.1182C13.4922 18.134 12.9367 18.154 12.4167 18.1782C6.25 18.464 1.22333 23.3382 0.75 29.1708" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
@@ -1057,7 +204,7 @@
 <!-- ===== НИЖНЯЯ НАВИГАЦИЯ ===== -->
 <div class="bottom-nav">
 
-  <!-- ЗАМЕНИТЕ ИКОНКУ: Кошелёк (в навигации, слева) -->
+  <!-- Кошелёк (в навигации, слева) -->
   <div class="nav-wallet" id="navWallet">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M3.5 9.91671H17.5C20.7993 9.91671 22.4502 9.9167 23.4745 10.9422C24.5 11.9665 24.5 13.6174 24.5 16.9167V18.0834C24.5 21.3827 24.5 23.0335 23.4745 24.0579C22.4502 25.0834 20.7993 25.0834 17.5 25.0834H10.5C7.20067 25.0834 5.54984 25.0834 4.5255 24.0579C3.5 23.0335 3.5 21.3827 3.5 18.0834V9.91671ZM3.5 9.91671C3.49929 9.61514 3.58208 9.31927 3.7392 9.06186C3.89632 8.80446 4.12163 8.59558 4.39017 8.45837L14.7618 3.12437C15.0482 2.97692 15.3677 2.90559 15.6896 2.91725C16.0115 2.9289 16.325 3.02314 16.6 3.19091C16.875 3.35868 17.1022 3.59435 17.2598 3.87527C17.4174 4.15619 17.5001 4.47292 17.5 4.79504V9.91437" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
@@ -1066,7 +213,7 @@
     <span id="walletBalance">17 520 ₽</span>
   </div>
 
-  <!-- ЗАМЕНИТЕ ИКОНКУ: Главная (домик) -->
+  <!-- Главная (домик) -->
   <div class="nav-item active" data-page="home">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M13.4165 24.4997H11.0832C7.23317 24.4997 5.30817 24.4997 4.11234 23.3038C2.9165 22.108 2.9165 20.183 2.9165 16.333V13.4047C2.9165 11.4423 2.9165 10.4623 3.33184 9.61301C3.74645 8.76514 4.51917 8.16375 6.06085 6.96389L6.06884 6.95767L8.40217 5.14351C10.8113 3.26984 12.0165 2.33301 13.4165 2.33301C14.8165 2.33301 16.0217 3.26984 18.4308 5.14351L20.7642 6.95767C22.3123 8.16167 23.0858 8.76367 23.5012 9.61301C23.9165 10.4623 23.9165 11.4423 23.9165 13.4047V13.9997" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#72C499"/>
@@ -1075,7 +222,7 @@
     <span>Главная</span>
   </div>
 
-  <!-- ЗАМЕНИТЕ ИКОНКУ: Отчёт (документ) -->
+  <!-- Отчёт (документ) -->
   <div class="nav-item" data-page="report">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M9.33301 4.66602V5.83268C9.33301 6.93285 9.33301 7.48235 9.67484 7.82418C10.0167 8.16602 10.5662 8.16602 11.6663 8.16602H16.333C17.4332 8.16602 17.9827 8.16602 18.3245 7.82418C18.6663 7.48235 18.6663 6.93285 18.6663 5.83268V4.66602" stroke-width="1.5" stroke-linejoin="round" stroke="black"/>
@@ -1085,7 +232,7 @@
     <span>Отчёт</span>
   </div>
 
-  <!-- ЗАМЕНИТЕ ИКОНКУ: Плюс (добавить трату) -->
+  <!-- Плюс (добавить трату) -->
   <button class="nav-add-btn" id="navAddBtn">
     <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M32.4998 21.667V32.5003M32.4998 32.5003V43.3337M32.4998 32.5003H43.3332M32.4998 32.5003H21.6665" stroke-width="2" stroke-linecap="round" stroke="white"/>
@@ -1093,7 +240,7 @@
     </svg>
   </button>
 
-  <!-- ЗАМЕНИТЕ ИКОНКУ: Тема (круг/палитра) -->
+  <!-- Тема (круг/палитра) -->
   <div class="nav-item" data-page="theme">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M25.4565 12.149C25.7388 13.8278 25.88 14.6678 24.7822 16.2557C24.6702 16.419 24.3797 16.7667 24.2397 16.9067C22.8782 18.2693 21.5027 18.2693 18.7505 18.2693H16.4953C15.7603 18.2693 15.3917 18.2693 15.1245 18.3335C14.5552 18.4755 14.0592 18.8245 13.7333 19.3125C13.4074 19.8004 13.2749 20.3922 13.3617 20.9725C13.4013 21.2478 13.5378 21.5943 13.812 22.2862C13.9228 22.5697 13.9788 22.7108 14.0162 23.0188C14.1503 24.1598 12.9347 25.6088 11.8018 25.659C11.4962 25.6707 11.4752 25.6672 11.4367 25.659C8.84022 25.0727 6.52486 23.6101 4.88001 21.5173C0.860843 16.4272 1.67051 8.99782 6.69184 4.92382C11.7132 0.849819 19.0433 1.66882 23.0648 6.75899C24.3042 8.32497 25.127 10.1792 25.4565 12.149Z" stroke-width="1.5" stroke-linejoin="round" stroke="black"/>
@@ -1102,7 +249,7 @@
     <span>Тема</span>
   </div>
 
-  <!-- ЗАМЕНИТЕ ИКОНКУ: Профиль (часы/аватар) в навигации -->
+  <!-- Профиль (часы/аватар) в навигации -->
   <div class="nav-item" data-page="profile">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
     <span>Профиль</span>
@@ -1114,12 +261,12 @@
 <div class="overlay" id="templateOverlay">
   <div class="overlay-header">
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Закрыть (крестик) — оверлей шаблона -->
+    <!-- Закрыть (крестик) — оверлей шаблона -->
     <button class="overlay-close" id="templateCloseBtn">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Календарь с часами (выбор даты) — оверлей шаблона -->
+    <!-- Календарь с часами (выбор даты) — оверлей шаблона -->
     <div class="overlay-calendar">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="18" cy="16" r="2"/></svg>
     </div>
@@ -1129,7 +276,7 @@
   <div class="overlay-form">
     <div class="form-field-wrapper">
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Рубль/кошелёк (выбор кошелька) — оверлей шаблона -->
+      <!-- Рубль/кошелёк (выбор кошелька) — оверлей шаблона -->
       <div class="form-field" id="templateWalletField">
         <div class="form-field-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
@@ -1144,12 +291,12 @@
 
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Стрелка вниз (между полями) — оверлей шаблона -->
+    <!-- Стрелка вниз (между полями) — оверлей шаблона -->
     <div class="form-arrow">
       <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Дом/категория (выбранная категория) — оверлей шаблона -->
+    <!-- Дом/категория (выбранная категория) — оверлей шаблона -->
     <div class="form-field selected" id="templateCategoryField">
       <div class="form-field-icon">
         <svg viewBox="0 0 24 24"><path d="M3 21V9l9-7 9 7v12M9 21v-6h6v6"/></svg>
@@ -1163,7 +310,7 @@
     <button class="key-btn" data-key="8">8</button>
     <button class="key-btn" data-key="9">9</button>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Удалить символ (ластик) — оверлей шаблона -->
+    <!-- Удалить символ (ластик) — оверлей шаблона -->
     <button class="key-btn delete" id="templateDeleteBtn">
       <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
     </button>
@@ -1176,7 +323,7 @@
     <button class="key-btn" data-key="2">2</button>
     <button class="key-btn" data-key="3">3</button>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Подтвердить (галочка) — оверлей шаблона -->
+    <!-- Подтвердить (галочка) — оверлей шаблона -->
     <button class="key-btn confirm" id="templateConfirmBtn">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </button>
@@ -1189,12 +336,12 @@
 <div class="overlay" id="addOverlay">
   <div class="overlay-header">
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Закрыть (крестик) — оверлей добавления -->
+    <!-- Закрыть (крестик) — оверлей добавления -->
     <button class="overlay-close" id="addCloseBtn">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Календарь с часами (выбор даты) — оверлей добавления -->
+    <!-- Календарь с часами (выбор даты) — оверлей добавления -->
     <div class="overlay-calendar">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="18" cy="16" r="2"/></svg>
     </div>
@@ -1204,7 +351,7 @@
   <div class="overlay-form">
     <div class="form-field-wrapper">
 
-      <!-- ЗАМЕНИТЕ ИКОНКУ: Рубль/кошелёк (выбор кошелька) — оверлей добавления -->
+      <!-- Рубль/кошелёк (выбор кошелька) — оверлей добавления -->
       <div class="form-field" id="addWalletField">
         <div class="form-field-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
@@ -1219,12 +366,12 @@
 
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Стрелка вниз (между полями) — оверлей добавления -->
+    <!-- Стрелка вниз (между полями) — оверлей добавления -->
     <div class="form-arrow">
       <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Тег/категория (выбор категории) — оверлей добавления -->
+    <!-- Тег/категория (выбор категории) — оверлей добавления -->
     <div class="form-field" id="addCategoryField">
       <div class="form-field-icon">
         <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -1237,37 +384,37 @@
   <!-- СЕТКА КАТЕГОРИЙ -->
   <div class="category-grid" id="categoryGrid">
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Еда (коробка/пакет) -->
+    <!-- Еда (коробка/пакет) -->
     <div class="category-option" data-cat="food">
       <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
       <span>Еда</span>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Транспорт (машина) -->
+    <!-- Транспорт (машина) -->
     <div class="category-option" data-cat="transport">
       <svg viewBox="0 0 24 24"><path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2"/></svg>
       <span>Транспорт</span>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Развлечения (слои) -->
+    <!-- Развлечения (слои) -->
     <div class="category-option" data-cat="entertainment">
       <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       <span>Развлечения</span>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Покупки (корзина) -->
+    <!-- Покупки (корзина) -->
     <div class="category-option" data-cat="shopping">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span>Покупки</span>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Здоровье (пульс) -->
+    <!-- Здоровье (пульс) -->
     <div class="category-option" data-cat="health">
       <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       <span>Здоровье</span>
     </div>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Другое (информация) -->
+    <!-- Другое (информация) -->
     <div class="category-option" data-cat="other">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Другое</span>
@@ -1280,7 +427,7 @@
     <button class="key-btn" data-key="8">8</button>
     <button class="key-btn" data-key="9">9</button>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Удалить символ (ластик) — оверлей добавления -->
+    <!-- Удалить символ (ластик) — оверлей добавления -->
     <button class="key-btn delete" id="addDeleteBtn">
       <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
     </button>
@@ -1293,7 +440,7 @@
     <button class="key-btn" data-key="2">2</button>
     <button class="key-btn" data-key="3">3</button>
 
-    <!-- ЗАМЕНИТЕ ИКОНКУ: Подтвердить (галочка) — оверлей добавления -->
+    <!-- Подтвердить (галочка) — оверлей добавления -->
     <button class="key-btn confirm" id="addConfirmBtn">
       <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
     </button>

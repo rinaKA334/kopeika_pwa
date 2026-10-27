@@ -1,0 +1,850 @@
+@font-face {
+    font-family: 'LT Remark';
+    src: url('fonts/LTRemark-May2021.otf') format('otf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'LT Remark';
+    src: url('fonts/LT-Remark-Bold3.otf') format('otf'),
+    url('fonts/LT-Remark-Bold-Italic.otf') format('otf'),
+    url('fonts/LT-Remark-Black3.otf') format('otf');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Основной шрифт для всего текста */
+    --font-main: 'Nunito', sans-serif;
+
+    /* Акцентный шрифт для заголовков */
+    --font-accent: 'LT Remark', 'Nunito', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-main);
+    background: #f5f5f7;
+}
+
+.app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* ===== ЛЕВАЯ ПАНЕЛЬ (скроллится) ===== */
+.left-panel {
+    width: 45%;
+    min-width: 380px;
+    max-width: 720px;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 40px 48px 140px 48px;
+    position: relative;
+    z-index: 2;
+    background: #f5f5f7;
+}
+
+.left-panel::-webkit-scrollbar {
+    width: 0;
+}
+
+/* ===== ПРАВАЯ ПАНЕЛЬ (фиксирована, с персонажем) ===== */
+.right-panel {
+    flex: 1;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 55%;
+    min-width: 600px;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.right-panel.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(20px);
+}
+
+/* ===== ПЕРСОНАЖ ===== */
+.character-image {
+    width: 100%;
+    height: 100%;
+    background-image: url('desktop_picture_main.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+
+/* ===== ДАТА И ПРИВЕТСТВИЕ ===== */
+.date-text {
+    font-size: 16px;
+    color: #8e8e93;
+    margin-bottom: 8px;
+    font-family: var(--font-main);
+}
+
+.greeting {
+    font-family: var(--font-accent);
+    font-size: 36px;
+    font-weight: 700;
+    color: #1c1c1e;
+    margin-bottom: 40px;
+}
+
+/* ===== БАЛАНС ===== */
+.balance-section {
+    margin-bottom: 40px;
+}
+
+.balance-amount {
+    font-family: var(--font-accent);
+    font-size: clamp(40px, 5vw, 56px);
+    font-weight: 700;
+    color: #1c1c1e;
+    letter-spacing: -1px;
+}
+
+.balance-label {
+    font-size: 16px;
+    color: #8e8e93;
+    margin-top: 4px;
+    font-family: var(--font-main);
+}
+
+.progress-container {
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e5e5ea;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 41.6%;
+    background: linear-gradient(90deg, #7dd3a0 0%, #c8e64e 60%, #f0d040 100%);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+.progress-limit {
+    font-size: 14px;
+    color: #8e8e93;
+    text-align: right;
+    margin-top: 8px;
+    font-family: var(--font-main);
+}
+
+/* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
+.section-header,
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 36px;
+}
+
+.section-title {
+    font-family: var(--font-accent);
+    font-size: 24px;
+    font-weight: 700;
+    color: #1c1c1e;
+}
+
+.section-add-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #d1d1d6;
+    background: transparent;
+    font-size: 22px;
+    color: #1c1c1e;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-family: var(--font-main);
+}
+
+.section-add-btn:hover {
+    background: #1c1c1e;
+    color: #fff;
+    border-color: #1c1c1e;
+}
+
+/* ===== ШАБЛОНЫ ТРАТ ===== */
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.template-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.template-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    border-color: #7dd3a0;
+}
+
+.template-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1c1c1e;
+    margin-bottom: 12px;
+    font-family: var(--font-main);
+}
+
+.template-divider {
+    width: 40px;
+    height: 2px;
+    background: #e5e5ea;
+    margin: 0 auto 12px;
+}
+
+.template-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.template-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.template-name {
+    font-size: 14px;
+    color: #1c1c1e;
+    font-weight: 500;
+    font-family: var(--font-main);
+}
+
+/* ===== ОПЕРАЦИИ ===== */
+.transactions-all {
+    font-size: 18px;
+    color: #1c1c1e;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: var(--font-main);
+}
+
+.transactions-all:hover {
+    color: #7dd3a0;
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.transaction-item {
+    background: #fff;
+    border-radius: 20px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.transaction-item:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.transaction-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.transaction-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: #f5f5f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ИСПРАВЛЕНИЕ: SVG иконок операций — fill: none чтобы не было чёрных кругов */
+.transaction-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.transaction-info {
+    min-width: 0;
+}
+
+.transaction-info h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1e;
+    font-family: var(--font-main);
+}
+
+.transaction-info p {
+    font-size: 13px;
+    color: #8e8e93;
+    margin-top: 2px;
+    font-family: var(--font-main);
+}
+
+.transaction-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1c1c1e;
+    white-space: nowrap;
+    margin-left: 12px;
+    font-family: var(--font-main);
+}
+
+/* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border-radius: 32px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.nav-wallet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    min-width: 80px;
+}
+
+.nav-wallet svg {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-wallet span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1c1c1e;
+    margin-top: 2px;
+    font-family: var(--font-main);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.2s;
+    min-width: 72px;
+}
+
+.nav-item:hover {
+    background: #f5f5f7;
+}
+
+.nav-item.active {
+    background: #e8f5ee;
+}
+
+.nav-item svg {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item span {
+    font-size: 12px;
+    color: #8e8e93;
+    margin-top: 4px;
+    font-weight: 500;
+    font-family: var(--font-main);
+}
+
+.nav-item.active span {
+    color: #4caf7a;
+}
+
+.nav-add-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #7dd3a0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+.nav-add-btn:hover {
+    background: #6bc490;
+    transform: scale(1.05);
+}
+
+.nav-add-btn svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* ===== КНОПКА ПРОФИЛЯ ===== */
+.profile-btn {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    z-index: 50;
+    transition: all 0.2s;
+}
+
+.profile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.profile-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ===== ОВЕРЛЕИ ===== */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(245, 245, 247, 0.98);
+    z-index: 200;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow-y: auto;
+}
+
+.overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.overlay-header {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.overlay-close {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.overlay-close:hover {
+    background: #e5e5ea;
+}
+
+.overlay-close svg {
+    width: 28px;
+    height: 28px;
+    stroke: #1c1c1e;
+    stroke-width: 2;
+}
+
+.overlay-calendar {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-calendar svg {
+    width: 36px;
+    height: 36px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+}
+
+.overlay-amount {
+    font-family: var(--font-accent);
+    font-size: clamp(48px, 8vw, 72px);
+    font-weight: 700;
+    color: #1c1c1e;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
+}
+
+.overlay-form {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 28px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.form-field-wrapper {
+    position: relative;
+}
+
+.form-field {
+    background: #f5f5f7;
+    border-radius: 20px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field:hover {
+    background: #eee;
+}
+
+.form-field.selected {
+    background: #7dd3a0;
+}
+
+.form-field.selected .form-field-text {
+    color: #fff;
+}
+
+.form-field-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.form-field-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+}
+
+.form-field-text {
+    font-size: 20px;
+    color: #1c1c1e;
+    font-weight: 500;
+    font-family: var(--font-main);
+}
+
+.form-arrow {
+    text-align: center;
+    margin: 8px 0;
+}
+
+.form-arrow svg {
+    width: 24px;
+    height: 24px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 2;
+}
+
+/* ===== КЛАВИАТУРА ===== */
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 560px;
+    width: 100%;
+    aspect-ratio: 4 / 3.2;
+}
+
+.key-btn {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 500;
+    color: #1c1c1e;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    font-family: var(--font-main);
+    aspect-ratio: 1;
+}
+
+.key-btn:hover {
+    background: #f0f0f2;
+    transform: scale(1.02);
+}
+
+.key-btn:active {
+    transform: scale(0.95);
+}
+
+.key-btn.delete {
+    background: #ff6b6b;
+    color: #fff;
+}
+
+.key-btn.delete:hover {
+    background: #ff5252;
+}
+
+.key-btn.delete svg {
+    width: 32px;
+    height: 32px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2;
+}
+
+.key-btn.confirm {
+    background: #7dd3a0;
+    color: #fff;
+    border-radius: 24px;
+    aspect-ratio: auto;
+    grid-row: 3 / 5;
+    grid-column: 4;
+    height: 100%;
+}
+
+.key-btn.confirm:hover {
+    background: #6bc490;
+}
+
+.key-btn.confirm svg {
+    width: 40px;
+    height: 40px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2.5;
+}
+
+.key-btn.zero {
+    grid-column: 1 / 3;
+    border-radius: 40px;
+    aspect-ratio: auto;
+    height: 100%;
+    width: 100%;
+}
+
+/* ===== ВЫПАДАЮЩИЙ СПИСОК КОШЕЛЬКОВ ===== */
+.wallet-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 10;
+    display: none;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.wallet-dropdown.show {
+    display: block;
+}
+
+.wallet-option {
+    padding: 14px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.15s;
+    font-family: var(--font-main);
+}
+
+.wallet-option:hover {
+    background: #f5f5f7;
+}
+
+.wallet-option.selected {
+    background: #e8f5ee;
+    color: #4caf7a;
+    font-weight: 600;
+}
+
+/* ===== СЕТКА КАТЕГОРИЙ ===== */
+.category-grid {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 600px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.category-grid.show {
+    display: grid;
+}
+
+.category-option {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.category-option:hover {
+    border-color: #7dd3a0;
+}
+
+.category-option.selected {
+    border-color: #7dd3a0;
+    background: #e8f5ee;
+}
+
+.category-option svg {
+    width: 28px;
+    height: 28px;
+    stroke: #1c1c1e;
+    fill: none;
+    stroke-width: 1.5;
+    margin-bottom: 6px;
+}
+
+.category-option span {
+    font-size: 13px;
+    color: #1c1c1e;
+    font-weight: 500;
+    display: block;
+    font-family: var(--font-main);
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1100px) {
+    .right-panel {
+        display: none;
+    }
+    .left-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+    .templates-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .left-panel {
+        padding: 24px 20px 140px 20px;
+    }
+    .greeting {
+        font-size: 28px;
+    }
+    .templates-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .bottom-nav {
+        bottom: 12px;
+        padding: 10px 12px;
+        gap: 4px;
+    }
+    .nav-item {
+        min-width: 60px;
+        padding: 6px 10px;
+    }
+    .nav-wallet {
+        min-width: 70px;
+        padding: 6px 10px;
+    }
+}
