@@ -19,6 +19,283 @@
 <body>
 <div class="app-container">
 
+<!-- ===== ОНБОРДИНГ / РЕГИСТРАЦИЯ ===== -->
+<div class="onboarding" id="onboarding">
+  <!-- Индикаторы шагов -->
+  <div class="onboarding-steps">
+    <div class="step-dot active" data-step="0">1</div>
+    <div class="step-dot" data-step="1">2</div>
+    <div class="step-dot" data-step="2">3</div>
+    <div class="step-dot" data-step="3">4</div>
+    <div class="step-dot" data-step="4">5</div>
+  </div>
+
+  <!-- Персонаж на фоне -->
+  <div class="onboarding-character"></div>
+
+  <!-- ШАГ 0: Приветствие -->
+  <div class="onboarding-screen active" data-screen="0">
+    <div class="onboarding-card center-card">
+      <h2 class="onboarding-title">Привет! Я Копеечка-тян</h2>
+      <p class="onboarding-subtitle">Заполни анкету, чтобы выбрать себе<br>компаньона по душе</p>
+      <button class="onboarding-btn primary" id="onboardStart">Так и быть</button>
+      <button class="onboarding-btn secondary" id="onboardSkip">Не хочу</button>
+    </div>
+  </div>
+
+  <!-- ШАГ 1: Первый кошелёк с вводом суммы -->
+  <div class="onboarding-screen" data-screen="1">
+    <div class="onboarding-card center-card">
+      <h2 class="onboarding-title">Давайте создадим ваш первый кошелёк</h2>
+      <p class="onboarding-subtitle">С него по умолчанию будут списываться<br>введённые траты</p>
+      <div class="wallet-input-wrapper">
+        <div class="wallet-input-display" id="walletInputDisplay">0 ₽</div>
+      </div>
+      <div class="keypad keypad-onboarding" id="walletKeypad">
+        <button class="key-btn" data-key="7">7</button>
+        <button class="key-btn" data-key="8">8</button>
+        <button class="key-btn" data-key="9">9</button>
+        <button class="key-btn delete" id="walletDeleteBtn">
+          <svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+        </button>
+        <button class="key-btn" data-key="4">4</button>
+        <button class="key-btn" data-key="5">5</button>
+        <button class="key-btn" data-key="6">6</button>
+        <button class="key-btn" data-key=".">.</button>
+        <button class="key-btn" data-key="1">1</button>
+        <button class="key-btn" data-key="2">2</button>
+        <button class="key-btn" data-key="3">3</button>
+        <button class="key-btn confirm" id="walletConfirmBtn">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+        <button class="key-btn zero" data-key="0">0</button>
+      </div>
+      <button class="onboarding-btn primary" id="onboardWalletNext" style="margin-top: 20px;">Пошли дальше</button>
+    </div>
+  </div>
+
+  <!-- ШАГ 2: Пол -->
+  <div class="onboarding-screen" data-screen="2">
+    <div class="onboarding-card center-card">
+      <h2 class="onboarding-title">Укажите свой пол</h2>
+      <p class="onboarding-subtitle">Чтобы нам знать, как к вам обращаться</p>
+      <div class="gender-cards">
+        <label class="gender-card" data-gender="female">
+          <div class="gender-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="9" r="4"/>
+              <path d="M12 13v8M9 18h6"/>
+            </svg>
+          </div>
+          <span>Женский</span>
+          <div class="gender-radio"><div class="gender-radio-dot"></div></div>
+        </label>
+        <label class="gender-card" data-gender="male">
+          <div class="gender-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="9" r="4"/>
+              <path d="M12 13v8M8 18h8"/>
+            </svg>
+          </div>
+          <span>Мужской</span>
+          <div class="gender-radio"><div class="gender-radio-dot"></div></div>
+        </label>
+      </div>
+      <button class="onboarding-btn primary" id="onboardGenderNext">Пошли дальше</button>
+    </div>
+  </div>
+
+  <!-- ШАГ 3: Выбор категорий -->
+  <div class="onboarding-screen" data-screen="3">
+    <div class="onboarding-card categories-card">
+      <h2 class="onboarding-title">Выбери интересующие тебя категории</h2>
+      <p class="onboarding-subtitle">Они будут на первом месте при добавлении</p>
+      <div class="categories-list" id="categoriesList">
+        <label class="category-item" data-category="housing">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <span class="category-name">Жильё</span>
+          <div class="category-checkbox"><div class="category-check-dot"></div></div>
+        </label>
+        <label class="category-item" data-category="entertainment">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <span class="category-name">Развлечения</span>
+          <div class="category-checkbox"><div class="category-check-dot"></div></div>
+        </label>
+        <label class="category-item" data-category="transport">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2M5 17a2 2 0 104 0M19 17a2 2 0 11-4 0"/>
+            </svg>
+          </div>
+          <span class="category-name">Транспорт</span>
+          <div class="category-checkbox"><div class="category-check-dot"></div></div>
+        </label>
+        <label class="category-item" data-category="groceries">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+            </svg>
+          </div>
+          <span class="category-name">Продукты</span>
+          <div class="category-checkbox"><div class="category-check-dot"></div></div>
+        </label>
+        <label class="category-item" data-category="telecom">
+          <div class="category-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/>
+            </svg>
+          </div>
+          <span class="category-name">Телесвязь / Интернет</span>
+          <div class="category-checkbox"><div class="category-check-dot"></div></div>
+        </label>
+      </div>
+      <button class="onboarding-btn primary" id="onboardCategoriesNext">Пошли дальше</button>
+      <button class="onboarding-btn secondary" id="onboardCategoriesAuto">Выбери за меня</button>
+    </div>
+  </div>
+
+<!-- ШАГ 4: Выбор компаньона -->
+<div class="onboarding-screen" data-screen="4">
+  <div class="companion-selection" id="companionSelection">
+    
+    <div class="companion-grid-2x2">
+      <div class="companion-tile" data-companion="purple-female">
+        <div class="tile-image-wrapper">
+          <img src="companion_purple_female.png" alt="Рубль-тян">
+        </div>
+        <div class="companion-tile-overlay">
+          <div class="overlay-content">
+            <h3 class="overlay-name">Рубль-тян</h3>
+            <div class="overlay-tags">
+              <span class="overlay-tag">Резкая</span>
+              <span class="overlay-tag">Наглая</span>
+              <span class="overlay-tag">Нетерпеливая</span>
+            </div>
+            <div class="overlay-notification-label">Пример уведомления:</div>
+            <div class="overlay-notification">
+              <svg class="overlay-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+              </svg>
+              <div class="overlay-notification-text">Эй ты, страх потерял?<br>Быстро зашёл и ввёл свои ср...</div>
+              <svg class="overlay-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-tile" data-companion="purple-male">
+        <div class="tile-image-wrapper">
+          <img src="companion_purple_male.png" alt="Рубль-кун">
+        </div>
+        <div class="companion-tile-overlay">
+          <div class="overlay-content">
+            <h3 class="overlay-name">Рубль-кун</h3>
+            <div class="overlay-tags">
+              <span class="overlay-tag">Доминант</span>
+              <span class="overlay-tag">Наглый</span>
+              <span class="overlay-tag">Нетерпеливый</span>
+              <span class="overlay-tag">Требовательный</span>
+            </div>
+            <div class="overlay-notification-label">Пример уведомления:</div>
+            <div class="overlay-notification">
+              <svg class="overlay-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+              </svg>
+              <div class="overlay-notification-text">Ты давно не заходила<br>Малышка, пора записать тра...</div>
+              <svg class="overlay-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-tile" data-companion="green-female">
+        <div class="tile-image-wrapper">
+          <img src="companion_green_female.png" alt="Копеечка-тян">
+        </div>
+        <div class="companion-tile-overlay">
+          <div class="overlay-content">
+            <h3 class="overlay-name">Копеечка-тян</h3>
+            <div class="overlay-tags">
+              <span class="overlay-tag">Добрая</span>
+              <span class="overlay-tag">Отзывчивая</span>
+              <span class="overlay-tag">Стеснительная</span>
+              <span class="overlay-tag">Понимающая</span>
+            </div>
+            <div class="overlay-notification-label">Пример уведомления:</div>
+            <div class="overlay-notification">
+              <svg class="overlay-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+              </svg>
+              <div class="overlay-notification-text">Господин, вы давно не заходили Т.Т<br>На Вашем счету ещё много...</div>
+              <svg class="overlay-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="companion-tile" data-companion="green-male">
+        <div class="tile-image-wrapper">
+          <img src="companion_green_male.png" alt="Копейка-кун">
+        </div>
+        <div class="companion-tile-overlay">
+          <div class="overlay-content">
+            <h3 class="overlay-name">Копейка-кун</h3>
+            <div class="overlay-tags">
+              <span class="overlay-tag">Весёлый</span>
+              <span class="overlay-tag">Добрый</span>
+              <span class="overlay-tag">Ответственный</span>
+              <span class="overlay-tag">Комфортный</span>
+            </div>
+            <div class="overlay-notification-label">Пример уведомления:</div>
+            <div class="overlay-notification">
+              <svg class="overlay-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+              </svg>
+              <div class="overlay-notification-text">Госпожа, вам уведомление!<br>Извините, что беспокою, но...</div>
+              <svg class="overlay-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="companion-center-card">
+      <h2 class="companion-center-title">Выбери своего компаньона</h2>
+      <p class="companion-center-subtitle">От выбора зависит стилизация<br>комментариев, советов в приложении</p>
+      <button class="onboarding-btn primary companion-next-btn" id="onboardCompanionNext">Далее</button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- ШАГ 5: Финал -->
+  <div class="onboarding-screen" data-screen="5">
+    <div class="onboarding-character-final" id="finalCharacter"></div>
+    <div class="onboarding-card center-card">
+      <h2 class="onboarding-title">Мы закончили!<br>Теперь ты можешь начать<br>копить монетки.<br>Удачи!</h2>
+      <button class="onboarding-btn primary" id="onboardFinish">Отлично!</button>
+    </div>
+  </div>
+</div>
+
+
   <!-- ===== ЛЕВАЯ ПАНЕЛЬ (СКРОЛЛИТСЯ) ===== -->
   <div class="left-panel" id="leftPanel">
     <div class="date-text" id="currentDate">среда, 21 октября</div>
@@ -865,6 +1142,295 @@
     else if (profileModal.classList.contains('active')) closeProfileModal();
   });
 
+  // ===== ОНБОРДИНГ / РЕГИСТРАЦИЯ =====
+
+const ONBOARDING_KEY = 'kopeechka_onboarding';
+const USER_KEY = 'kopeechka_user';
+
+// Генерация авто-имени
+function generateUsername() {
+  const prefix = 'user';
+  const suffix = Math.floor(Math.random() * 9000 + 1000);
+  return prefix + suffix;
+}
+
+// Данные онбординга
+const onboardingData = {
+  username: generateUsername(),
+  walletName: 'Основной',
+  walletBalance: 0,
+  gender: null,
+  categories: [],
+  companion: 'green-female'
+};
+
+// DOM элементы
+const onboarding = document.getElementById('onboarding');
+const screens = document.querySelectorAll('.onboarding-screen');
+const stepDots = document.querySelectorAll('.step-dot');
+
+// Проверка при загрузке
+function checkOnboarding() {
+  const completed = localStorage.getItem(ONBOARDING_KEY);
+  if (completed === 'true') {
+    onboarding.classList.add('hidden');
+    setTimeout(() => onboarding.style.display = 'none', 400);
+    loadUserData();
+  } else {
+    showScreen(0);
+  }
+}
+
+// Показать экран
+function showScreen(index) {
+  screens.forEach(s => s.classList.remove('active'));
+  const target = document.querySelector(`.onboarding-screen[data-screen="${index}"]`);
+  if (target) target.classList.add('active');
+
+  stepDots.forEach((dot, i) => {
+    dot.classList.toggle('active', i <= Math.min(index, 4));
+  });
+
+  // Переключаем режим компаньона (скрываем шаги и фоновый персонаж)
+  onboarding.classList.toggle('companion-mode', index === 4);
+}
+
+// Сохранить данные
+function saveUserData() {
+  localStorage.setItem(USER_KEY, JSON.stringify(onboardingData));
+}
+
+// Загрузить данные
+function loadUserData() {
+  const data = localStorage.getItem(USER_KEY);
+  if (data) {
+    const parsed = JSON.parse(data);
+    console.log('Загружен пользователь:', parsed);
+    applyUserDataToUI(parsed);
+  }
+}
+
+// Применить данные к основному интерфейсу
+function applyUserDataToUI(data) {
+  // Обновить приветствие
+  const greeting = document.querySelector('.greeting');
+  if (greeting && data.username) {
+    greeting.textContent = `Привет, ${data.username}`;
+  }
+  
+  // Обновить баланс кошелька
+  const walletBalance = document.getElementById('walletBalance');
+  if (walletBalance && data.walletBalance !== undefined) {
+    walletBalance.textContent = formatNumber(data.walletBalance) + ' ₽';
+  }
+  
+  // Обновить приоритетные категории в шаблонах
+  if (data.categories && data.categories.length > 0) {
+    reorderTemplates(data.categories);
+  }
+}
+
+// Переупорядочить шаблоны по приоритету
+function reorderTemplates(priorityCategories) {
+  const grid = document.getElementById('templatesGrid');
+  if (!grid) return;
+  
+  const cards = Array.from(grid.querySelectorAll('.template-card'));
+  const categoryMap = {
+    'housing': 'Квартира',
+    'groceries': 'Продукты',
+    'transport': 'Такси',
+    'entertainment': 'Развлечения',
+    'telecom': 'Телесвязь'
+  };
+  
+  priorityCategories.forEach((cat, index) => {
+    const name = categoryMap[cat];
+    const card = cards.find(c => c.dataset.category === name);
+    if (card && index < cards.length) {
+      grid.insertBefore(card, grid.children[index]);
+    }
+  });
+}
+
+// Завершить онбординг
+function finishOnboarding() {
+  saveUserData();
+  localStorage.setItem(ONBOARDING_KEY, 'true');
+  onboarding.classList.add('hidden');
+  setTimeout(() => {
+    onboarding.style.display = 'none';
+    applyUserDataToUI(onboardingData);
+    applyCompanionToMainScreen(); // ← добавь эту строку
+  }, 400);
+}
+
+// Форматирование числа
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+// ===== ШАГ 0: Приветствие =====
+document.getElementById('onboardStart').addEventListener('click', () => {
+  showScreen(1);
+});
+
+document.getElementById('onboardSkip').addEventListener('click', () => {
+  finishOnboarding();
+});
+
+// ===== ШАГ 1: Кошелёк с клавиатурой =====
+let walletInputValue = '0';
+
+function updateWalletDisplay() {
+  const num = parseFloat(walletInputValue) || 0;
+  document.getElementById('walletInputDisplay').textContent = formatNumber(Math.floor(num)) + ' ₽';
+}
+
+document.querySelectorAll('#walletKeypad .key-btn[data-key]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.key;
+    if (key === '.') {
+      if (!walletInputValue.includes('.')) walletInputValue += '.';
+    } else {
+      if (walletInputValue === '0') walletInputValue = key;
+      else walletInputValue += key;
+    }
+    updateWalletDisplay();
+  });
+});
+
+document.getElementById('walletDeleteBtn').addEventListener('click', () => {
+  walletInputValue = walletInputValue.slice(0, -1);
+  if (walletInputValue === '' || walletInputValue === '-') walletInputValue = '0';
+  updateWalletDisplay();
+});
+
+document.getElementById('walletConfirmBtn').addEventListener('click', () => {
+  const amount = parseFloat(walletInputValue) || 0;
+  onboardingData.walletBalance = amount;
+  showScreen(2);
+});
+
+document.getElementById('onboardWalletNext').addEventListener('click', () => {
+  const amount = parseFloat(walletInputValue) || 0;
+  onboardingData.walletBalance = amount;
+  showScreen(2);
+});
+
+// ===== ШАГ 2: Пол =====
+document.querySelectorAll('.gender-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.gender-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    onboardingData.gender = card.dataset.gender;
+  });
+});
+
+document.getElementById('onboardGenderNext').addEventListener('click', () => {
+  if (!onboardingData.gender) {
+    document.querySelectorAll('.gender-card').forEach(c => {
+      c.style.borderColor = '#ff6b6b';
+      setTimeout(() => c.style.borderColor = '', 1000);
+    });
+    return;
+  }
+  showScreen(3);
+});
+
+// ===== ШАГ 3: Категории =====
+document.querySelectorAll('.category-item').forEach(item => {
+  item.addEventListener('click', () => {
+    item.classList.toggle('selected');
+    updateSelectedCategories();
+  });
+});
+
+function updateSelectedCategories() {
+  onboardingData.categories = Array.from(document.querySelectorAll('.category-item.selected'))
+    .map(item => item.dataset.category);
+}
+
+document.getElementById('onboardCategoriesNext').addEventListener('click', () => {
+  showScreen(4);
+});
+
+document.getElementById('onboardCategoriesAuto').addEventListener('click', () => {
+  // Автоматический выбор популярных категорий
+  const autoCategories = ['groceries', 'transport', 'entertainment'];
+  document.querySelectorAll('.category-item').forEach(item => {
+    item.classList.toggle('selected', autoCategories.includes(item.dataset.category));
+  });
+  updateSelectedCategories();
+  setTimeout(() => showScreen(4), 300);
+});
+
+// ===== ШАГ 4: Компаньон =====
+
+// Клик для выбора компаньона
+document.querySelectorAll('.companion-tile').forEach(tile => {
+  tile.addEventListener('click', () => {
+    document.querySelectorAll('.companion-tile').forEach(t => t.classList.remove('selected'));
+    tile.classList.add('selected');
+    onboardingData.companion = tile.dataset.companion;
+  });
+});
+
+document.getElementById('onboardCompanionNext').addEventListener('click', () => {
+  showScreen(5);
+});
+
+// ===== ШАГ 5: Финал =====
+document.getElementById('onboardFinish').addEventListener('click', () => {
+  finishOnboarding();
+});
+
+// ===== КНОПКА "ВЫЙТИ" В ПРОФИЛЕ =====
+const logoutBtn = document.querySelector('.profile-logout');
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    // Закрываем профиль, если открыт
+    const profileModal = document.getElementById('profileModal');
+    if (profileModal) profileModal.classList.remove('active');
+
+    // Очищаем данные аккаунта из localStorage
+    localStorage.removeItem('kopeechka_onboarding');
+    localStorage.removeItem('kopeechka_user');
+
+    // Перезагружаем страницу — появится онбординг
+    window.location.reload();
+  });
+}
+
+// ===== СМЕНА ПЕРСОНАЖА НА ГЛАВНОМ ЭКРАНЕ =====
+const companionImages = {
+  'green-female': 'companion_green_female.png',
+  'green-male': 'companion_green_male.png',
+  'purple-male': 'companion_purple_male.png',
+  'purple-female': 'companion_purple_female.png'
+};
+
+function applyCompanionToMainScreen() {
+  const data = JSON.parse(localStorage.getItem(USER_KEY) || '{}');
+  const companionKey = data.companion || 'green-female';
+  const imagePath = companionImages[companionKey];
+  
+  if (imagePath) {
+    const characterImage = document.querySelector('.character-image');
+    if (characterImage) {
+      characterImage.style.backgroundImage = `url('${imagePath}')`;
+    }
+  }
+}
+
+// Вызови эту функцию после загрузки страницы
+document.addEventListener('DOMContentLoaded', () => {
+  applyCompanionToMainScreen();
+});
+
+// Запуск
+checkOnboarding();
 
   // Инициализация
   updateUI();
